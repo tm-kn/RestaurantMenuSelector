@@ -14,71 +14,149 @@ public class Menu {
 	
 	private List<Course> courses = new ArrayList<Course>();
 	
+	/**
+	 * Constructor method loads initial data.
+	 */
 	public Menu() {
 		this(true);
 	}
 	
+	/**
+	 * Constructor which enables a choice if initial data will be loaded.
+	 * @param initialData
+	 */
 	public Menu(Boolean initialData) {
 		if(initialData) {
 			this.loadInitialData();
 		}
 	}
 	
+	/**
+	 * Loads initial courses to our menu.
+	 */
 	private void loadInitialData() {
 		this.addCourse(Course.class, "Ketchup", 2.20);
 		this.addCourse(MainCourse.class, "Pizza", 5.20);
 		this.addCourse(MainCourse.class, "Test pizza", 5.30);
 		this.addCourse(Course.class, "Musstard", 10.30);
-		this.addCourse(DessertCourse.class, "Ice cream", 10.30);
+		this.addCourse(Dessert.class, "Ice cream", 10.30);
 	}
 
+	/**
+	 * Gets a list of all courses in the menu.
+	 * @return list of courses
+	 */
 	public List<Course> getCourses() {
 		return courses;
 	}
 	
-	public void addCourse(Class<? extends Course> courseType, String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan, Boolean vegetarian, Boolean glutenFree) {
+	/**
+	 * Adds a course to menu
+	 * @param courseType	Class of a type you want to use as a course type, e.g. MainCourse.class.
+	 * @param name	
+	 * @param price
+	 * @param calories
+	 * @param description
+	 * @param nutFree
+	 * @param vegan
+	 * @param vegetarian
+	 * @param glutenFree
+	 * @return true if has been added
+	 */
+	public Boolean addCourse(Class<? extends Course> courseType, String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan, Boolean vegetarian, Boolean glutenFree) {
+		
+		// Define a variable to store a constructor of any class which is Course or inherits from Course
 		Constructor<? extends Course> contructor;
+		
+		// Try to get a constructor from class specified by user
 		try {
 			contructor = courseType.getConstructor(String.class, Double.class, int.class, String.class, Boolean.class, Boolean.class, Boolean.class, Boolean.class);
 		} catch (NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
-			return;
+			return false;
 		}
+		
+		// Specify a variable for a new instance of a course
 		Course newCourse;
+		
+		// Try to create an instance of a course
 		try {
 			newCourse = contructor.newInstance(name, price, calories, description, nutFree, vegan, vegetarian, glutenFree);
 		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
 				| InvocationTargetException e) {
 			e.printStackTrace();
-			return;
+			return false;
 		}
-		this.addCourse(newCourse);
+		
+		return this.addCourse(newCourse);
 	}
 	
-	public void addCourse(Class<? extends Course> courseType, String name, Double price, int calories, String description) {
-		this.addCourse(courseType, name, price, calories, description, false, false, false, false);
+	/**
+	 * Shortcut to add a course without specifying if food is suitable for vegetarian, vegans, gluten-free, etc.
+	 * @param courseType
+	 * @param name
+	 * @param price
+	 * @param calories
+	 * @param description
+	 * @return true if has been added
+	 */
+	public Boolean addCourse(Class<? extends Course> courseType, String name, Double price, int calories, String description) {
+		return this.addCourse(courseType, name, price, calories, description, false, false, false, false);
 	}
 	
-	public void addCourse(Class<? extends Course> courseType, String name, Double price) {
-		this.addCourse(courseType, name, price, 0, "", false, false, false, false);
+	/**
+	 * Shortcut to add a course without special information, only course type, name and price.
+	 * @param courseType
+	 * @param name
+	 * @param price
+	 * @return true if has been added
+	 */
+	public Boolean addCourse(Class<? extends Course> courseType, String name, Double price) {
+		return this.addCourse(courseType, name, price, 0, "", false, false, false, false);
 	}
 	
-	public void addCourse(String name, Double price) {
-		this.addCourse(Course.class, name, price, 0, "", false, false, false, false);
+	/**
+	 * Adds a course only.
+	 * @param name
+	 * @param price
+	 * @return true if has been added
+	 */
+	public Boolean addCourse(String name, Double price) {
+		return this.addCourse(Course.class, name, price, 0, "", false, false, false, false);
 	}
 	
-	public void addCourse(Course course) {
-		this.courses.add(course);
+	/**
+	 * Adds a course with a course instance.
+	 * @param course
+	 * @return true if has been added
+	 */
+	public Boolean addCourse(Course course) {
+		return this.courses.add(course);
 	}
 	
-	public void deleteCourse(Course course) {
-		this.courses.remove(course);
+	/**
+	 * Deletes a course from the menu.
+	 * @param course
+	 * @return true if has been removed
+	 */
+	public Boolean deleteCourse(Course course) {
+		return this.courses.remove(course);
 	}
 	
-	public void deleteCourse(int index) {
-		this.courses.remove(index);
+	/**
+	 * Deletes a course by its index in the courses list.
+	 * @param index
+	 * @return returns a course instance if it has been deleted.
+	 */
+	public Course deleteCourse(int index) {
+		return this.courses.remove(index);
 	}
 	
+	/**
+	 * Returns an index in the courses list of a specified course instance.
+	 * @param course
+	 * @return index
+	 */
 	public int indexOf(Course course) {
 		return this.courses.indexOf(course);
 	}

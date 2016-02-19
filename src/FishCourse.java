@@ -1,9 +1,9 @@
 /**
- * Dessert is type of a course.
+ * Starter is type of a course.
  * @author Tomasz Knapik <u1562595@unimail.hud.ac.uk>
  *
  */
-public class DessertCourse extends Course {
+public class FishCourse extends Course {
 	
 	/**
 	 * Constructor inherited from the superclass.
@@ -16,7 +16,7 @@ public class DessertCourse extends Course {
 	 * @param vegetarian
 	 * @param glutenFree
 	 */
-	public DessertCourse(String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan,
+	public FishCourse(String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan,
 			Boolean vegetarian, Boolean glutenFree) {
 		super(name, price, calories, description, nutFree, vegan, vegetarian, glutenFree);
 	}
@@ -26,7 +26,7 @@ public class DessertCourse extends Course {
 	 * @return
 	 */
 	public static String getCourseTypeNameOfClass() {
-		return "Desserts";
+		return "Fish courses";
 	}
 
 }
