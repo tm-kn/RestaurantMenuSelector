@@ -17,6 +17,7 @@ public class Order {
 	 */
 	public Order() {
 		this.number = System.identityHashCode(this);
+		this.addDiner(new Diner());
 	}
 	
 	/**
@@ -101,5 +102,21 @@ public class Order {
 	 */
 	public int getTotalKiloCalories() {
 		return this.getTotalCalories() / 1000;
+	}
+	
+	/**
+	 * Gets order number
+	 * @return order number
+	 */
+	public int getNumber() {
+		return this.number;
+	}
+	
+	/**
+	 * Gets a table assigned to an order.
+	 * @return a Table object.
+	 */
+	public Table getTable() {
+		return this.table;
 	}
 }

@@ -11,6 +11,18 @@ public class Table {
 	private int number;
 	private List<Order> orders = new ArrayList<Order>();
 	
+	public int getNumber() {
+		return number;
+	}
+
+	public void setNumber(int number) {
+		this.number = number;
+	}
+
+	public List<Order> getOrders() {
+		return orders;
+	}
+	
 	/**
 	 * Constructor for a Table class.
 	 * @param number	table number

@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Map;
+import javax.swing.SwingUtilities;
 
 /**
  * Start point for the programme.
@@ -10,6 +9,20 @@ import java.util.Map;
 public class Programme {
 
 	public static void main(String[] args) {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				try {
+					LaunchScreen frame = new LaunchScreen();
+					frame.setLocationRelativeTo(null);
+					frame.setVisible(true);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			
+		});
 		
 		
 	}
