@@ -48,6 +48,14 @@ public class Order {
 	}
 	
 	/**
+	 * Removes a diner from the list
+	 * @param diner you want to delete
+	 */
+	public void deleteDiner(Diner diner) {
+		this.diners.remove(diner);
+	}
+	
+	/**
 	 * Updates table of the order. It also updates order list in Table's instance.
 	 * @param table
 	 */
