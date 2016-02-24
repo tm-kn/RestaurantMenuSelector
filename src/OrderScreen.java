@@ -12,6 +12,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
@@ -20,7 +21,7 @@ public class OrderScreen extends JFrame {
 
 	private Order order = new Order();
 	private Container cp;
-	private JButton tableChoiceButton;
+	private JButton tableChoiceButton, addDinerButton;
 	private JPanel centrePanel, dinersPanel, tableChoicePanel;
 	private JLabel orderHeadingLabel, tableNumberLabel, dinersHeadingLabel, totalPriceLabel;
 	
@@ -60,6 +61,18 @@ public class OrderScreen extends JFrame {
 		
 		this.totalPriceLabel = new JLabel();
 		
+		this.addDinerButton = new JButton("Add another diner");
+		this.addDinerButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				OrderScreen.this.order.addDiner(new Diner());
+				System.out.println(OrderScreen.this.order.getDiners().toString());
+				OrderScreen.this.refreshData();
+			}
+			
+		});
+		
 		
 		this.centrePanel = new JPanel();
 		this.centrePanel.setLayout(new BoxLayout(this.centrePanel, BoxLayout.Y_AXIS));
@@ -78,6 +91,7 @@ public class OrderScreen extends JFrame {
 		this.centrePanel.add(this.dinersHeadingLabel);
 		this.centrePanel.add(this.dinersPanel);
 		this.centrePanel.add(this.totalPriceLabel);
+		this.centrePanel.add(this.addDinerButton);
 		
 		
 		
@@ -104,6 +118,8 @@ public class OrderScreen extends JFrame {
 		
 		// Remove all the diners from the screen
 		this.dinersPanel.removeAll();
+		this.dinersPanel.repaint();
+		this.dinersPanel.revalidate();
 		
 		// Generate all the diners again
 		if(this.order.getDiners().size() > 0) {
@@ -129,10 +145,29 @@ public class OrderScreen extends JFrame {
 		dinerHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 30.0));
 		dinerRow.add(dinerHeadingLabel);
 		
+		if(this.order.getDiners().size() > 1) {
+			JButton deleteDinerButton = new JButton("Delete a diner");
+			deleteDinerButton.addActionListener(new ActionListener(){
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int response = JOptionPane.showConfirmDialog(null, "Do you want to delete diner no. " + dinerNumber, "Confirm",
+					JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+					
+					if (response == JOptionPane.YES_OPTION) {
+						OrderScreen.this.order.deleteDiner(diner);
+						OrderScreen.this.refreshData();
+					}
+				}
+				
+			});
+			dinerRow.add(deleteDinerButton);
+		}
+		
 		// Go through the courses and add them to our panel
 		if(diner.getCourses().size() > 0) {
 			for(Course course : diner.getCourses()) {
-				dinerRow.add(this.generateDinerCourseRow(course));
+				dinerRow.add(this.generateDinerCourseRow(course, diner));
 			}
 		} else {
 			dinerRow.add(new JLabel("No courses have been added yet."));
@@ -166,10 +201,23 @@ public class OrderScreen extends JFrame {
 		return dinerRow;
 	}
 	
-	private JPanel generateDinerCourseRow(Course course) {
+	private JPanel generateDinerCourseRow(Course course, Diner diner) {
 		JPanel courseRow = new JPanel();
+		
+		JButton deleteButton = new JButton("Delete");
+		deleteButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				diner.deleteCourse(course);
+				OrderScreen.this.refreshData();
+				
+			}
+		});
+		
 		courseRow.setLayout(new BoxLayout(courseRow, BoxLayout.X_AXIS));
 		courseRow.add(new JLabel(course.getName()));
+		courseRow.add(deleteButton);
 		return courseRow;
 	}
 	
