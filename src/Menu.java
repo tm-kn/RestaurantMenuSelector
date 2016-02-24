@@ -12,6 +12,7 @@ import java.util.Map;
  */
 public class Menu {
 	
+	static Menu instance;
 	private List<Course> courses = new ArrayList<Course>();
 	
 	/**
@@ -31,11 +32,19 @@ public class Menu {
 		}
 	}
 	
+	public static Menu getInstance() {
+		if(Menu.instance == null) {
+			Menu.instance = new Menu();
+		}
+		
+		return Menu.instance;
+	}
+	
 	/**
 	 * Loads initial courses to our menu.
 	 */
 	private void loadInitialData() {
-		this.addCourse(Course.class, "Ketchup", 2.20);
+		this.addCourse(Course.class, "Ketchup", 2.20, 250, "tomatooooooo", true, true, true, true);
 		this.addCourse(MainCourse.class, "Pizza", 5.20);
 		this.addCourse(MainCourse.class, "Test pizza", 5.30);
 		this.addCourse(Course.class, "Musstard", 10.30);

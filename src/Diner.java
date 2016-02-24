@@ -79,4 +79,12 @@ public class Diner {
 	public Course deleteCourse(int index) {
 		return this.courses.remove(index);
 	}
+	
+	/**
+	 * Gets courses for a diner.
+	 * @return list of courses;
+	 */
+	public List<Course> getCourses() {
+		return this.courses;
+	}
 }
