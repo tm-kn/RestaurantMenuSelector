@@ -93,20 +93,22 @@ public class AddCourseToDinerScreen extends JDialog {
 		// Sort courses according to their category, e.g. main courses, desserts, fish courses, drinks, etc.
 		Map<Class<?>, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);
 		
-		// Create a pane which stores all the course rows
-		int rowsNumber = coursesList.size() + sortedCoursesList.size();
-		
 		JPanel courseRowsList = new JPanel();
-		courseRowsList.setLayout(new GridLayout(rowsNumber, 1, 0, 10));
+		courseRowsList.setLayout(new BoxLayout(courseRowsList, BoxLayout.Y_AXIS));
 
 		for (Map.Entry<Class<?>, List<Course>> entry : sortedCoursesList.entrySet()) {
 			Class<?> key = entry.getKey();
 			List<Course> value = entry.getValue();
 			
+			JPanel courseTypePane = new JPanel();
+			courseTypePane.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
+			
 			JLabel courseTypeLabel = new JLabel(Course.getCourseTypeNameOfClassCourseType(key));
 			courseTypeLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
 			
-			courseRowsList.add(courseTypeLabel);
+			courseTypePane.add(courseTypeLabel);
+			
+			courseRowsList.add(courseTypePane);
 
 			for (Course course : value) {
 				JPanel courseRow = new JPanel();
@@ -185,6 +187,7 @@ public class AddCourseToDinerScreen extends JDialog {
 				courseRow.add(courseLeftRow);
 				courseRow.add(courseRightRow);
 				courseRowsList.add(courseRow);
+				courseRowsList.add(Box.createRigidArea(new Dimension(0, 50)));
 			}
 
 		}
