@@ -23,30 +23,29 @@ public class TableChoiceDialog extends JDialog {
 	public TableChoiceDialog(OrderScreen parent) {
 		super(parent, "Choose a table", true);
 		this.parent = parent;
-		
-		
+
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		{
 			JPanel choicePane = new JPanel();
-			
+
 			choicePane.setLayout(new FlowLayout(FlowLayout.LEFT));
-			
+
 			getContentPane().add(choicePane, BorderLayout.CENTER);
-			{ 
+			{
 				tableChoiceComboBox = new JComboBox(this.tableList.getTables().toArray());
 				Table selectedTable = TableChoiceDialog.this.parent.getOrder().getTable();
-				
-				if(selectedTable != null) {
+
+				if (selectedTable != null) {
 					tableChoiceComboBox.setSelectedItem(selectedTable);
 				}
-				
+
 				choicePane.add(new JLabel("Choose a table you're sat at."));
-				choicePane.add(tableChoiceComboBox);	
+				choicePane.add(tableChoiceComboBox);
 			}
-			
+
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
@@ -62,7 +61,7 @@ public class TableChoiceDialog extends JDialog {
 						TableChoiceDialog.this.parent.refreshData();
 						TableChoiceDialog.this.dispose();
 					}
-					
+
 				});
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
@@ -76,7 +75,7 @@ public class TableChoiceDialog extends JDialog {
 					public void actionPerformed(ActionEvent event) {
 						TableChoiceDialog.this.dispose();
 					}
-					
+
 				});
 				buttonPane.add(cancelButton);
 			}
