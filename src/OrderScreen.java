@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -24,9 +25,9 @@ public class OrderScreen extends JFrame {
 	static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 	private Order order = new Order();
 	private Container cp;
-	private	JScrollPane scrollPane;
+	private	JScrollPane dinersScrollPane;
 	private JButton tableChoiceButton, addDinerButton;
-	private JPanel northPane, southPane, centrePane, dinersPanel, tableChoicePanel;
+	private JPanel northPane, southPane, centrePane, dinersHeadingPane, orderHeadingPane, dinersPane, tableChoicePane;
 	private JLabel orderHeadingLabel, tableNumberLabel, dinersHeadingLabel, totalPriceLabel;
 
 	/**
@@ -39,14 +40,13 @@ public class OrderScreen extends JFrame {
 
 		// North pane
 		this.northPane = new JPanel();
+		this.northPane.setLayout(new BoxLayout(this.northPane, BoxLayout.Y_AXIS));
 		
+		this.orderHeadingPane = new JPanel();
+		this.orderHeadingPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 		this.orderHeadingLabel = new JLabel();
-		this.orderHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 75.0));
-
-		this.dinersHeadingLabel = new JLabel("Diners");
-		this.dinersHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 50.0));
-
-		this.dinersHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 50.0));
+		this.orderHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 40.0));
+		this.orderHeadingPane.add(this.orderHeadingLabel);
 
 		this.tableNumberLabel = new JLabel();
 		this.tableChoiceButton = new JButton("Change");
@@ -66,33 +66,44 @@ public class OrderScreen extends JFrame {
 
 		});
 		
+		this.tableChoicePane = new JPanel();
+		this.tableChoicePane.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		this.tableChoicePane.add(this.tableNumberLabel);
+		this.tableChoicePane.add(this.tableChoiceButton);
+		
+		this.dinersHeadingPane = new JPanel();
+		this.dinersHeadingPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
+		this.dinersHeadingLabel = new JLabel("Diners");
+		this.dinersHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 30.0));
+		
+		this.dinersHeadingPane.add(this.dinersHeadingLabel);
+
+		this.northPane.add(this.orderHeadingPane);
+		this.northPane.add(this.tableChoicePane);
+		this.northPane.add(this.dinersHeadingPane);
+		
 		// Centre pane
 		this.centrePane = new JPanel();
-		this.centrePane.setLayout(new BoxLayout(this.centrePane, BoxLayout.Y_AXIS));
-
-		this.scrollPane = new JScrollPane(this.centrePane);
+		this.centrePane.setLayout(new BoxLayout(this.centrePane, BoxLayout.Y_AXIS));		
 		
-		this.dinersPanel = new JPanel();
-		this.dinersPanel.setLayout(new BoxLayout(this.dinersPanel, BoxLayout.Y_AXIS));
-
-		this.tableChoicePanel = new JPanel();
-		this.tableChoicePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		this.tableChoicePanel.add(this.tableNumberLabel);
-		this.tableChoicePanel.add(this.tableChoiceButton);
-
-		this.northPane.add(this.orderHeadingLabel);
-		this.northPane.add(this.tableChoicePanel);
+		this.dinersPane = new JPanel();
+		this.dinersPane.setLayout(new BoxLayout(this.dinersPane, BoxLayout.Y_AXIS));
 		
-		this.centrePane.add(this.dinersHeadingLabel);
-		this.centrePane.add(this.dinersPanel);
+		this.dinersScrollPane = new JScrollPane(this.dinersPane);
+		
+		this.centrePane.add(this.dinersScrollPane);
 		
 		// South pane
 		this.southPane = new JPanel();
+		this.southPane.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
 		
 		this.totalPriceLabel = new JLabel();
+		this.totalPriceLabel.setFont(this.totalPriceLabel.getFont().deriveFont((float) 25.0));
 		
 		this.addDinerButton = new JButton("Add another diner");
+		this.addDinerButton.setFont(this.totalPriceLabel.getFont());
 		this.addDinerButton.addActionListener(new ActionListener() {
 
 			@Override
@@ -109,7 +120,7 @@ public class OrderScreen extends JFrame {
 		
 		// Content pane
 		this.cp.add(this.northPane, BorderLayout.NORTH);
-		this.cp.add(this.scrollPane, BorderLayout.CENTER);
+		this.cp.add(this.centrePane, BorderLayout.CENTER);
 		this.cp.add(this.southPane, BorderLayout.SOUTH);
 		
 		this.refreshData();
@@ -117,9 +128,6 @@ public class OrderScreen extends JFrame {
 		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.pack();
 		this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
-		
-		
-
 	}
 
 	private void insertDataToWindowFromOrderObject() {
@@ -134,19 +142,19 @@ public class OrderScreen extends JFrame {
 		this.totalPriceLabel.setText("Total: £" + DECIMAL_FORMAT.format(this.order.getTotalPrice()));
 
 		// Remove all the diners from the screen
-		this.dinersPanel.removeAll();
-		this.dinersPanel.repaint();
-		this.dinersPanel.revalidate();
+		this.dinersPane.removeAll();
+		this.dinersPane.repaint();
+		this.dinersPane.revalidate();
 
 		// Generate all the diners again
 		if (this.order.getDiners().size() > 0) {
 			int i = 1;
 			for (Diner diner : this.order.getDiners()) {
-				this.dinersPanel.add(this.generateDinerRow(diner, i));
+				this.dinersPane.add(this.generateDinerRow(diner, i));
 				i++;
 			}
 		} else {
-			this.dinersPanel.add(new JLabel("No diners defined."));
+			this.dinersPane.add(new JLabel("No diners defined."));
 		}
 
 	}
