@@ -1,10 +1,17 @@
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -12,17 +19,20 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
 public class AddCourseToDinerScreen extends JDialog {
 
-	private final JPanel contentPanel = new JPanel();
+	final static Font FONT_30 = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
+	private JPanel buttonPane, menuPane, filterPane;
+	private Container cp;
 	private OrderScreen parent;
 	private Diner diner;
 	private	JScrollPane scrollPane;
-	private Menu menu = Menu.getInstance();
+	private Menu menu;
 	private JCheckBox nutFreeCheckBox, glutenFreeCheckBox, vegetarianCheckBox, veganCheckBox;
-	private JPanel menuPane;
+	private JButton cancelButton;
 
 	/**
 	 * Create the dialog.
@@ -34,64 +44,111 @@ public class AddCourseToDinerScreen extends JDialog {
 		// Get data from the constructor
 		this.parent = parent;
 		this.diner = diner;
-
-		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 450, 300);
-		getContentPane().setLayout(new BorderLayout());
 		
-		contentPanel.setLayout(new FlowLayout());
-		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
+		// Some basics
+		this.menu = Menu.getInstance();
+		this.cp = this.getContentPane();		
+		this.cp.setLayout(new BorderLayout());
+		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		
+		// Filter pane
+		this.filterPane = new JPanel();
+		this.refreshFilterPane();
 
-		getContentPane().add(this.getFilterPane(), BorderLayout.NORTH);
-
+		// Create menu pane
 		this.menuPane = new JPanel();
 		this.menuPane.setLayout(new BorderLayout());
 		this.refreshMenuPane();
-
-		getContentPane().add(this.menuPane, BorderLayout.EAST);
-
 		this.scrollPane = new JScrollPane(this.menuPane);
-		this.getContentPane().add(this.scrollPane, BorderLayout.CENTER);
-		{
-			JPanel buttonPane = new JPanel();
-			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
-			getContentPane().add(buttonPane, BorderLayout.SOUTH);
-			{
-				JButton cancelButton = new JButton("Cancel");
-				cancelButton.setActionCommand("Cancel");
-				cancelButton.addActionListener(new ActionListener() {
+		
+		// Button pane
+		this.buttonPane = new JPanel();
+		this.buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
+		this.cancelButton = new JButton("Cancel");
+		this.cancelButton.setActionCommand("Cancel");
+		this.cancelButton.addActionListener(new ActionListener() {
 
-					@Override
-					public void actionPerformed(ActionEvent e) {
-						AddCourseToDinerScreen.this.dispose();
-					}
-
-				});
-				buttonPane.add(cancelButton);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				AddCourseToDinerScreen.this.dispose();
 			}
-		}
+
+		});
+		this.buttonPane.add(this.cancelButton);
+		
+		// Add everything to the content pane
+		this.cp.add(this.filterPane, BorderLayout.NORTH);
+		this.cp.add(this.scrollPane, BorderLayout.CENTER);
+		this.cp.add(this.buttonPane, BorderLayout.SOUTH);
+		
+		
+		this.pack();
 	}
 
 	private JPanel getMenuPane() {
+		// Get courses filtered with the filter pane
 		List<Course> coursesList = this.getFilteredCoursesList();
-
+		
+		// Sort courses according to their category, e.g. main courses, desserts, fish courses, drinks, etc.
 		Map<Class<?>, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);
-
+		
+		// Create a pane which stores all the course rows
+		int rowsNumber = this.menu.getCourses().size() + this.menu.getCourseTypesListOutOfCoursesList(this.menu.getCourses()).size();
+		
 		JPanel courseRowsList = new JPanel();
-		courseRowsList.setLayout(new BoxLayout(courseRowsList, BoxLayout.Y_AXIS));
+		courseRowsList.setLayout(new GridLayout(rowsNumber, 1, 0, 10));
 
 		for (Map.Entry<Class<?>, List<Course>> entry : sortedCoursesList.entrySet()) {
 			Class<?> key = entry.getKey();
 			List<Course> value = entry.getValue();
-
-			courseRowsList.add(new JLabel(Course.getCourseTypeNameOfClassCourseType(key)));
+			
+			JLabel courseTypeLabel = new JLabel(Course.getCourseTypeNameOfClassCourseType(key));
+			courseTypeLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
+			
+			courseRowsList.add(courseTypeLabel);
 
 			for (Course course : value) {
 				JPanel courseRow = new JPanel();
 				courseRow.setLayout(new BoxLayout(courseRow, BoxLayout.X_AXIS));
-
-				System.out.println(course.getName());
-				JButton courseButton = new JButton(course.getName());
+				
+				// Left side
+				JPanel courseLeftRow = new JPanel();
+				courseLeftRow.setLayout(new GridLayout(2, 1));
+				
+				// Name, price and kilocalories
+				JPanel courseLeftRowHeadingPane = new JPanel();
+				courseLeftRowHeadingPane.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 0));
+				
+				JLabel nameLabel = new JLabel(course.getName());
+				nameLabel.setFont(FONT_30);
+				
+				JLabel priceLabel = new JLabel("£" + OrderScreen.DECIMAL_FORMAT.format(course.getPrice()));
+				priceLabel.setFont(FONT_30);
+				
+				JLabel kiloCaloriesLabel = new JLabel(course.getKiloCalories() + "kcal");
+				kiloCaloriesLabel.setFont(FONT_30);
+				
+				courseLeftRowHeadingPane.add(nameLabel);
+				courseLeftRowHeadingPane.add(priceLabel);
+				courseLeftRowHeadingPane.add(kiloCaloriesLabel);
+				
+				// Description
+				JTextArea descriptionText = new JTextArea(course.getDescription());
+				descriptionText.setLineWrap(true);
+				descriptionText.setWrapStyleWord(true);
+				descriptionText.setOpaque(false);
+				descriptionText.setEditable(false);
+				descriptionText.setMargin(new Insets(0, 40, 0, 0));
+				
+				courseLeftRow.add(courseLeftRowHeadingPane);
+				courseLeftRow.add(descriptionText);
+				
+				// Right side
+				JPanel courseRightRow = new JPanel();
+				courseRightRow.setLayout(new FlowLayout(FlowLayout.RIGHT, 30, 0));
+				
+				JButton courseButton = new JButton("Add to the order");
 				courseButton.addActionListener(new ActionListener() {
 
 					@Override
@@ -101,8 +158,11 @@ public class AddCourseToDinerScreen extends JDialog {
 						AddCourseToDinerScreen.this.dispose();
 					}
 				});
+				
+				courseRightRow.add(courseButton);
 
-				courseRow.add(courseButton);
+				courseRow.add(courseLeftRow);
+				courseRow.add(courseRightRow);
 				courseRowsList.add(courseRow);
 			}
 
@@ -119,7 +179,7 @@ public class AddCourseToDinerScreen extends JDialog {
 	}
 
 	private JPanel getFilterPane() {
-		JPanel filterPane = new JPanel();
+		this.filterPane = new JPanel();
 
 		ActionListener defaultFilterCheckBoxActionListener = (new ActionListener() {
 
@@ -143,13 +203,19 @@ public class AddCourseToDinerScreen extends JDialog {
 		this.vegetarianCheckBox = new JCheckBox("Vegetarian");
 		this.vegetarianCheckBox.addActionListener(defaultFilterCheckBoxActionListener);
 
-		filterPane.add(this.nutFreeCheckBox);
-		filterPane.add(this.glutenFreeCheckBox);
-		filterPane.add(veganCheckBox);
-		filterPane.add(vegetarianCheckBox);
-		return filterPane;
+		this.filterPane.add(this.nutFreeCheckBox);
+		this.filterPane.add(this.glutenFreeCheckBox);
+		this.filterPane.add(veganCheckBox);
+		this.filterPane.add(vegetarianCheckBox);
+		return this.filterPane;
 	}
 
+	public void refreshFilterPane() {
+		this.filterPane.removeAll();
+		this.filterPane.revalidate();
+		this.getFilterPane();
+	}
+	
 	public void refreshMenuPane() {
 		this.menuPane.removeAll();
 		this.menuPane.revalidate();
