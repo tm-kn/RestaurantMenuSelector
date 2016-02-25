@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,7 @@ import javax.swing.border.EmptyBorder;
 
 public class OrderScreen extends JFrame {
 
+	static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 	private Order order = new Order();
 	private Container cp;
 	private JButton tableChoiceButton, addDinerButton;
@@ -99,8 +101,9 @@ public class OrderScreen extends JFrame {
 		
 		this.refreshData();
 		this.setLocationRelativeTo(null);
-		this.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.pack();
+		this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 
 	}
 	
@@ -113,7 +116,7 @@ public class OrderScreen extends JFrame {
 		
 		this.tableNumberLabel.setText("Table number: " + tableNumber);
 		this.orderHeadingLabel.setText("Order no. " + this.order.getNumber());
-		this.totalPriceLabel.setText("Total: £" + this.order.getTotalPrice());
+		this.totalPriceLabel.setText("Total: £" + DECIMAL_FORMAT.format(this.order.getTotalPrice()));
 		
 		
 		// Remove all the diners from the screen
@@ -141,7 +144,7 @@ public class OrderScreen extends JFrame {
 		dinerRow.setLayout(new BoxLayout(dinerRow, BoxLayout.Y_AXIS));
 		
 		// Create a heading label for the row
-		JLabel dinerHeadingLabel = new JLabel("Diner no. " + dinerNumber + "(total: £" + diner.getTotalPrice() + ", " + diner.getTotalKiloCalories() + "kcal)");
+		JLabel dinerHeadingLabel = new JLabel("Diner no. " + dinerNumber + "(total: £" + DECIMAL_FORMAT.format(diner.getTotalPrice()) + ", " + diner.getTotalKiloCalories() + "kcal)");
 		dinerHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 30.0));
 		dinerRow.add(dinerHeadingLabel);
 		
@@ -204,7 +207,7 @@ public class OrderScreen extends JFrame {
 	private JPanel generateDinerCourseRow(Course course, Diner diner) {
 		JPanel courseRow = new JPanel();
 		
-		JButton deleteButton = new JButton("Delete");
+		JButton deleteButton = new JButton("Delete a course");
 		deleteButton.addActionListener(new ActionListener() {
 			
 			@Override
@@ -217,6 +220,26 @@ public class OrderScreen extends JFrame {
 		
 		courseRow.setLayout(new BoxLayout(courseRow, BoxLayout.X_AXIS));
 		courseRow.add(new JLabel(course.getName()));
+		courseRow.add(new JLabel("£" + DECIMAL_FORMAT.format(course.getPrice())));
+		courseRow.add(new JLabel(course.getKiloCalories() + "kcal"));
+		courseRow.add(new JLabel(course.getDescription()));
+		
+		if(course.getGlutenFree()) {
+			courseRow.add(new JLabel("gluten-free"));
+		}
+		
+		if(course.getNutFree()) {
+			courseRow.add(new JLabel("nut-free"));
+		}
+		
+		if(course.getVegan()) {
+			courseRow.add(new JLabel("vegan"));
+		}
+		
+		if(course.getVegetarian()) {
+			courseRow.add(new JLabel("vegetarian"));
+		}
+		
 		courseRow.add(deleteButton);
 		return courseRow;
 	}

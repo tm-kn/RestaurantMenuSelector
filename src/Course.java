@@ -75,7 +75,7 @@ public class Course {
 	 * @return calories
 	 */
 	public int getCalories() {
-		return calories;
+		return this.calories;
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class Course {
 	 * @return kilocalories
 	 */
 	public int getKiloCalories() {
-		return calories / 1000;
+		return this.calories / 1000;
 	}
 
 	/**
@@ -195,7 +195,7 @@ public class Course {
 	 * @param cls	Class which is Course or inherits from Course.
 	 * @return course type name
 	 */
-	static public String getCourseTypeNameOfClassCourseType(Class<? extends Course> cls) {
+	static public String getCourseTypeNameOfClassCourseType(Class<?> cls) {
 		Method m = null;
 		try {
 			m = cls.getMethod("getCourseTypeNameOfClass");
