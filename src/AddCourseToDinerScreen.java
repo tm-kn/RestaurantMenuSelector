@@ -94,7 +94,7 @@ public class AddCourseToDinerScreen extends JDialog {
 		Map<Class<?>, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);
 		
 		// Create a pane which stores all the course rows
-		int rowsNumber = this.menu.getCourses().size() + this.menu.getCourseTypesListOutOfCoursesList(this.menu.getCourses()).size();
+		int rowsNumber = coursesList.size() + sortedCoursesList.size();
 		
 		JPanel courseRowsList = new JPanel();
 		courseRowsList.setLayout(new GridLayout(rowsNumber, 1, 0, 10));
@@ -140,6 +140,27 @@ public class AddCourseToDinerScreen extends JDialog {
 				descriptionText.setOpaque(false);
 				descriptionText.setEditable(false);
 				descriptionText.setMargin(new Insets(0, 40, 0, 0));
+				
+				if(course.getNutFree() || course.getVegan() || course.getVegetarian() || course.getGlutenFree()) {
+					descriptionText.append("\n");
+					descriptionText.append("\n");
+					
+					if(course.getNutFree()) {
+						descriptionText.append(" nut-free");
+					}
+					
+					if(course.getVegan()) {
+						descriptionText.append(" vegan");
+					}
+					
+					if(course.getVegetarian()) {
+						descriptionText.append(" vegetarian");
+					}
+					
+					if(course.getGlutenFree()) {
+						descriptionText.append(" gluten-free");
+					}
+				}
 				
 				courseLeftRow.add(courseLeftRowHeadingPane);
 				courseLeftRow.add(descriptionText);
