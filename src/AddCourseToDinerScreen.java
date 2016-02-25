@@ -72,13 +72,13 @@ public class AddCourseToDinerScreen extends JDialog {
 	private JPanel getMenuPane() {
 		List<Course> coursesList = this.getFilteredCoursesList();
 		
-		Map<Class<? extends Course>, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);
+		Map<Class<?>, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);
 		
 		JPanel courseRowsList = new JPanel();
 		courseRowsList.setLayout(new BoxLayout(courseRowsList, BoxLayout.Y_AXIS));
 		
-		for (Map.Entry<Class<? extends Course>, List<Course>> entry : sortedCoursesList.entrySet()) {
-		    Class<? extends Course> key = entry.getKey();
+		for (Map.Entry<Class<?>, List<Course>> entry : sortedCoursesList.entrySet()) {
+		    Class<?> key = entry.getKey();
 		    List<Course> value = entry.getValue();
 		    
 		    courseRowsList.add(new JLabel(Course.getCourseTypeNameOfClassCourseType(key)));

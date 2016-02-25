@@ -15,9 +15,10 @@ public class MainCourse extends Course {
 	 * @param vegan
 	 * @param vegetarian
 	 * @param glutenFree
+	 * @throws Exception 
 	 */
 	public MainCourse(String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan,
-			Boolean vegetarian, Boolean glutenFree) {
+			Boolean vegetarian, Boolean glutenFree) throws Exception {
 		super(name, price, calories, description, nutFree, vegan, vegetarian, glutenFree);
 	}
 	

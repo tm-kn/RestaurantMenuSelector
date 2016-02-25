@@ -44,11 +44,98 @@ public class Menu {
 	 * Loads initial courses to our menu.
 	 */
 	private void loadInitialData() {
-		this.addCourse(Course.class, "Ketchup", 2.20, 250, "tomatooooooo", true, true, true, true);
-		this.addCourse(MainCourse.class, "Pizza", 5.20);
-		this.addCourse(MainCourse.class, "Test pizza", 5.30);
-		this.addCourse(Course.class, "Musstard", 10.30);
-		this.addCourse(Dessert.class, "Ice cream", 10.30);
+		try {
+			// Starters
+			this.addCourse(
+				StarterCourse.class, "Gamberi", 5.99, 350000,
+				"Succulent king prawns baked in garlic & chilli butter, with ciabatta",
+				true, false, true, true);
+			
+			this.addCourse(
+				StarterCourse.class, "Bruschetta", 3.99, 200000,
+				"Plum tomatoes, rocket, red onion, garlic, olive oil and fresh basil on toasted ciabatta",
+				true, true, true, true);
+			
+			this.addCourse(
+				StarterCourse.class, "Polpette", 8.99, 500000,
+				"Baked spiced pork & beef meatballs in a rich tomato sauce, topped with melting mozzarella, served with ciabatta",
+				false, false, false, false);
+			
+			this.addCourse(
+				StarterCourse.class, "Arancini Funghi", 7.50, 350000,
+				"Mushroom risotto balls with  melting mozzarella, served with rocket leaves and a pomodoro sauce",
+				true, true, true, false);
+			
+			// Main courses
+			this.addCourse(
+				MainCourse.class, "Margherita Pizza", 9.25, 650000,
+				"Tomato, mozzarella and fresh basil",
+				false, true, true, true);
+		
+			this.addCourse(
+				MainCourse.class, "Pepperoni Pizza", 12.30, 800000,
+				"Spicy Italian pVanilla cheesecake with mascarpone topped with chocolate tagliatelle and served with a pot of fresh creamepperoni and hot green chillies",
+				false, false, false, true);
+			
+			this.addCourse(
+					MainCourse.class, "Lamb Shank", 18.99, 1200000,
+					"Lamb shank slow-cooked in a garlic, red wine & rosemary sauce, served with mashed potatoes and green beans",
+					true, false, false, false);
+			
+			this.addCourse(
+					MainCourse.class, "Burger Americano", 12.99, 900000,
+					"Chargrilled Aberdeen Angus beef burger, baby gem leaves, tomato, red onion and mayonnaise",
+					false, false, false, false);
+			
+			this.addCourse(
+					MainCourse.class, "Carbonara", 10.99, 825000,
+					"Spaghetti with crispy smoked pancetta, egg and pecorino cheese with a splash of cream",
+					false, false, false, true);
+			
+			this.addCourse(
+					MainCourse.class, "Tagliatelle Pomodoro", 8.99, 500000,
+					"Fresh egg tagliatelle with pomodoro sauce, fresh basil and basil oil",
+					true, false, true, true);
+			
+			
+			// Fish courses
+			this.addCourse(
+				FishCourse.class, "Cozze Alla Francese", 12.20, 900000,
+				"A pot of mussles served with chips. With extra virgin olive oil, garlic, white wine, tomatoes and parsley.",
+				true, false, true, false);
+			
+			this.addCourse(
+				FishCourse.class, "Cozze Alla Marinara", 12.20, 900000,
+				"Italian version of moules frites. A pot of mussels served with chips. With extra virgin oil, garlic, white wine, tomatoes and parsley..",
+				true, false, true, false);
+		
+			
+			// Dessert
+			this.addCourse(Dessert.class, "Gelato", 5.00, 700000, "3-scoop", false, false, true, false);
+			
+			this.addCourse(
+				Dessert.class, "Tiramisu Mousse", 8.00, 200000, "Layers of coffee mousse with sweet mascarpone mousse",
+				false, true, true, false);
+			
+			this.addCourse(
+				Dessert.class, "Vanilla Cheesecake", 6.00, 500000,
+				"Vanilla cheesecake with mascarpone topped with chocolate tagliatelle and served with a pot of fresh cream",
+				false, false, true, false);
+			
+			this.addCourse(
+				Dessert.class, "Pannacotta", 5.00, 500000,
+				"Creamy vanilla pannacotta served with morello cherry sauce",
+				false, false, true, false);
+			
+			// Drinks
+			this.addCourse(Drink.class, "Coca-cola 33cl", 3.00, 300000, "A can", false, true, true, false);
+			this.addCourse(Drink.class, "Juice 25cl", 3.00, 300000, "A glass", true, true, true, false);
+			this.addCourse(Drink.class, "Water 25cl", 2.00, 0, "A glass", true, true, true, false);
+			
+			
+		} catch(Exception exception) {
+			exception.printStackTrace();
+		}
 	}
 
 	/**
@@ -71,16 +158,17 @@ public class Menu {
 	 * @param vegetarian
 	 * @param glutenFree
 	 * @return true if has been added
+	 * @throws Exception 
 	 */
-	public Boolean addCourse(Class<? extends Course> courseType, String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan, Boolean vegetarian, Boolean glutenFree) {
+	public Boolean addCourse(Class<?> courseType, String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan, Boolean vegetarian, Boolean glutenFree) throws Exception {
 		
-		// Define a variable to store a constructor of any class which is Course or inherits from Course
-		Constructor<? extends Course> contructor;
+		// Define a variable to store a constructor.
+		Constructor<?> contructor;
 		
 		// Try to get a constructor from class specified by user
 		try {
 			contructor = courseType.getConstructor(String.class, Double.class, int.class, String.class, Boolean.class, Boolean.class, Boolean.class, Boolean.class);
-		} catch (NoSuchMethodException | SecurityException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -90,9 +178,8 @@ public class Menu {
 		
 		// Try to create an instance of a course
 		try {
-			newCourse = contructor.newInstance(name, price, calories, description, nutFree, vegan, vegetarian, glutenFree);
-		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-				| InvocationTargetException e) {
+			newCourse = (Course) contructor.newInstance(name, price, calories, description, nutFree, vegan, vegetarian, glutenFree);
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -109,8 +196,15 @@ public class Menu {
 	 * @param description
 	 * @return true if has been added
 	 */
-	public Boolean addCourse(Class<? extends Course> courseType, String name, Double price, int calories, String description) {
-		return this.addCourse(courseType, name, price, calories, description, false, false, false, false);
+	public Boolean addCourse(Class<?> courseType, String name, Double price, int calories, String description) {
+		try {
+			return this.addCourse(courseType, name, price, calories, description, false, false, false, false);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -120,8 +214,15 @@ public class Menu {
 	 * @param price
 	 * @return true if has been added
 	 */
-	public Boolean addCourse(Class<? extends Course> courseType, String name, Double price) {
-		return this.addCourse(courseType, name, price, 0, "", false, false, false, false);
+	public Boolean addCourse(Class<?> courseType, String name, Double price) {
+		try {
+			return this.addCourse(courseType, name, price, 0, "", false, false, false, false);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -131,7 +232,14 @@ public class Menu {
 	 * @return true if has been added
 	 */
 	public Boolean addCourse(String name, Double price) {
-		return this.addCourse(Course.class, name, price, 0, "", false, false, false, false);
+		try {
+			return this.addCourse(Course.class, name, price, 0, "", false, false, false, false);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
 	}
 	
 	/**
@@ -223,10 +331,10 @@ public class Menu {
 	 * @param courses List of courses you want to get types of.
 	 * @return List with courses types.
 	 */
-	static public List<Class<? extends Course>> getCourseTypesListOutOfCoursesList(List<? extends Course> courses) {
-		List<Class<? extends Course>> typesList = new ArrayList<Class<? extends Course>>();
+	static public List<Class<?>> getCourseTypesListOutOfCoursesList(List<?> courses) {
+		List<Class<?>> typesList = new ArrayList<Class<?>>();
 		
-		for (Course row : courses) {
+		for (Object row : courses) {
 			// Checks if typesList does not contain a class of this particular course.
 			if(!typesList.contains(row.getClass())) {
 				typesList.add(row.getClass());
@@ -241,14 +349,14 @@ public class Menu {
 	 * @param courses list of courses.
 	 * @return a map having course type as a key and courses list of that particular type as value.
 	 */
-	static public Map<Class<? extends Course>, List<Course>> groupByCourseType(List<Course> courses) {
-		Map<Class<? extends Course>, List<Course>> groupedMap = new HashMap<Class<? extends Course>, List<Course>>();
+	static public Map<Class<?>, List<Course>> groupByCourseType(List<Course> courses) {
+		Map<Class<?>, List<Course>> groupedMap = new HashMap<Class<?>, List<Course>>();
 		
 		// Gets all of course types in our list
-		List<Class<? extends Course>> typesList = Menu.getCourseTypesListOutOfCoursesList(courses);
+		List<Class<?>> typesList = Menu.getCourseTypesListOutOfCoursesList(courses);
 		
 		// Sets all of the types as keys in groupedMap and set values as empty lists
-		for (Class<? extends Course> typeRow: typesList) {
+		for (Class<?> typeRow: typesList) {
 			groupedMap.put(typeRow, new ArrayList<Course>());
 		}
 		
@@ -270,7 +378,7 @@ public class Menu {
 	 * Shortcut to a static method grouping courses by their types.
 	 * @return a map having course type as a key and courses list of that particular type as value.
 	 */
-	public Map<Class<? extends Course>, List<Course>> groupByCourseType() {
+	public Map<Class<?>, List<Course>> groupByCourseType() {
 		return Menu.groupByCourseType(this.courses);
 	}
 }
