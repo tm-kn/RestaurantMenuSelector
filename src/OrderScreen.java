@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +27,7 @@ public class OrderScreen extends JFrame {
 	private Order order = new Order();
 	private Container cp;
 	private	JScrollPane dinersScrollPane;
-	private JButton tableChoiceButton, addDinerButton;
+	private JButton tableChoiceButton, addDinerButton, payButton;
 	private JPanel northPane, southPane, centrePane, dinersHeadingPane, orderHeadingPane, dinersPane, tableChoicePane;
 	private JLabel orderHeadingLabel, tableNumberLabel, dinersHeadingLabel, totalPriceLabel;
 
@@ -109,14 +110,25 @@ public class OrderScreen extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				OrderScreen.this.order.addDiner(new Diner());
-				System.out.println(OrderScreen.this.order.getDiners().toString());
 				OrderScreen.this.refreshData();
+			}
+
+		});
+		
+		this.payButton = new JButton("Pay for your order");
+		this.payButton.setFont(this.totalPriceLabel.getFont());
+		this.payButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("Pressed pay button");
 			}
 
 		});
 		
 		this.southPane.add(this.totalPriceLabel);
 		this.southPane.add(this.addDinerButton);
+		this.southPane.add(this.payButton);
 		
 		// Content pane
 		this.cp.add(this.northPane, BorderLayout.NORTH);
@@ -156,6 +168,14 @@ public class OrderScreen extends JFrame {
 		} else {
 			this.dinersPane.add(new JLabel("No diners defined."));
 		}
+		
+		if(this.order.getTotalPrice() > 0.0) {
+			this.payButton.setEnabled(true);
+		}
+		else
+		{
+			this.payButton.setEnabled(false);
+		}
 
 	}
 
@@ -163,41 +183,19 @@ public class OrderScreen extends JFrame {
 		// Create a panel for the row
 		JPanel dinerRow = new JPanel();
 		dinerRow.setLayout(new BoxLayout(dinerRow, BoxLayout.Y_AXIS));
+		
+		// Create a panel for the heading of the row
+		JPanel dinerHeading = new JPanel();
+		dinerHeading.setLayout(new BoxLayout(dinerHeading, BoxLayout.X_AXIS));
 
 		// Create a heading label for the row
+		JPanel dinerHeadingLeftPane = new JPanel();
+		dinerHeadingLeftPane.setLayout(new FlowLayout(FlowLayout.LEFT));
 		JLabel dinerHeadingLabel = new JLabel("Diner no. " + dinerNumber + "(total: £"
 				+ DECIMAL_FORMAT.format(diner.getTotalPrice()) + ", " + diner.getTotalKiloCalories() + "kcal)");
 		dinerHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 30.0));
-		dinerRow.add(dinerHeadingLabel);
-
-		if (this.order.getDiners().size() > 1) {
-			JButton deleteDinerButton = new JButton("Delete a diner");
-			deleteDinerButton.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					int response = JOptionPane.showConfirmDialog(null, "Do you want to delete diner no. " + dinerNumber,
-							"Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-
-					if (response == JOptionPane.YES_OPTION) {
-						OrderScreen.this.order.deleteDiner(diner);
-						OrderScreen.this.refreshData();
-					}
-				}
-
-			});
-			dinerRow.add(deleteDinerButton);
-		}
-
-		// Go through the courses and add them to our panel
-		if (diner.getCourses().size() > 0) {
-			for (Course course : diner.getCourses()) {
-				dinerRow.add(this.generateDinerCourseRow(course, diner));
-			}
-		} else {
-			dinerRow.add(new JLabel("No courses have been added yet."));
-		}
-
+		dinerHeadingLeftPane.add(dinerHeadingLabel);
+		
 		// Create a button to add a new course
 		JButton addCourseButton = new JButton("Add a course for the diner");
 		addCourseButton.addActionListener(new ActionListener() {
@@ -222,14 +220,88 @@ public class OrderScreen extends JFrame {
 			}
 
 		});
-		dinerRow.add(addCourseButton);
+		dinerHeadingLeftPane.add(addCourseButton);
+		
+		
+		dinerHeading.add(dinerHeadingLeftPane);
+		
+		// Right pane
+		JPanel dinerHeadingRightPane = new JPanel();
+		dinerHeadingRightPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
+		if (this.order.getDiners().size() > 1) {
+			
+			
+			JButton deleteDinerButton = new JButton("Delete a diner");
+			deleteDinerButton.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					int response = JOptionPane.showConfirmDialog(null, "Do you want to delete diner no. " + dinerNumber,
+							"Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+
+					if (response == JOptionPane.YES_OPTION) {
+						OrderScreen.this.order.deleteDiner(diner);
+						OrderScreen.this.refreshData();
+					}
+				}
+
+			});
+			dinerHeadingRightPane.add(deleteDinerButton);
+		}
+		
+		dinerHeading.add(dinerHeadingRightPane);
+		
+		dinerRow.add(dinerHeading);
+		
+		JPanel coursesPane = new JPanel();
+		coursesPane.setLayout(new BoxLayout(coursesPane, BoxLayout.Y_AXIS));
+		
+		// Go through the courses and add them to our panel
+		if (diner.getCourses().size() > 0) {
+			for (Course course : diner.getCourses()) {
+				coursesPane.add(this.generateDinerCourseRow(course, diner));
+			}
+		} else {
+			JPanel noCoursesMessagePane = new JPanel();
+			noCoursesMessagePane.setLayout(new FlowLayout(FlowLayout.LEFT));
+			
+			noCoursesMessagePane.add(new JLabel("No courses have been added yet."));
+			coursesPane.add(noCoursesMessagePane);
+		}
+		
+		dinerRow.add(coursesPane);
 
 		return dinerRow;
 	}
 
 	private JPanel generateDinerCourseRow(Course course, Diner diner) {
 		JPanel courseRow = new JPanel();
-
+		courseRow.setLayout(new BoxLayout(courseRow, BoxLayout.Y_AXIS));
+		
+		// Heading pane
+		JPanel courseRowHeadingPane = new JPanel();
+		courseRowHeadingPane.setLayout(new BoxLayout(courseRowHeadingPane, BoxLayout.X_AXIS));
+		
+		JPanel leftPane = new JPanel();
+		leftPane.setLayout(new FlowLayout(FlowLayout.LEFT, 30, 0));
+		
+		Font headingFont = new Font(Font.SANS_SERIF, Font.PLAIN, 30);
+		
+		JLabel nameLabel = new JLabel(course.getName());
+		nameLabel.setFont(headingFont);
+		JLabel priceLabel = new JLabel("£" + DECIMAL_FORMAT.format(course.getPrice()));
+		priceLabel.setFont(headingFont);
+		JLabel kiloCaloriesLabel = new JLabel(course.getKiloCalories() + "kcal");
+		kiloCaloriesLabel.setFont(headingFont);
+		
+		leftPane.add(nameLabel);
+		leftPane.add(priceLabel);
+		leftPane.add(kiloCaloriesLabel);
+		
+		JPanel rightPane = new JPanel();
+		rightPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
+		
 		JButton deleteButton = new JButton("Delete a course");
 		deleteButton.addActionListener(new ActionListener() {
 
@@ -240,30 +312,14 @@ public class OrderScreen extends JFrame {
 
 			}
 		});
+		
+		rightPane.add(deleteButton);
+		
+		courseRowHeadingPane.add(leftPane);
+		courseRowHeadingPane.add(rightPane);
+		
+		courseRow.add(courseRowHeadingPane);
 
-		courseRow.setLayout(new BoxLayout(courseRow, BoxLayout.X_AXIS));
-		courseRow.add(new JLabel(course.getName()));
-		courseRow.add(new JLabel("£" + DECIMAL_FORMAT.format(course.getPrice())));
-		courseRow.add(new JLabel(course.getKiloCalories() + "kcal"));
-		courseRow.add(new JLabel(course.getDescription()));
-
-		if (course.getGlutenFree()) {
-			courseRow.add(new JLabel("gluten-free"));
-		}
-
-		if (course.getNutFree()) {
-			courseRow.add(new JLabel("nut-free"));
-		}
-
-		if (course.getVegan()) {
-			courseRow.add(new JLabel("vegan"));
-		}
-
-		if (course.getVegetarian()) {
-			courseRow.add(new JLabel("vegetarian"));
-		}
-
-		courseRow.add(deleteButton);
 		return courseRow;
 	}
 
