@@ -11,6 +11,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 public class AddCourseToDinerScreen extends JDialog {
@@ -18,6 +19,7 @@ public class AddCourseToDinerScreen extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private OrderScreen parent;
 	private Diner diner;
+	private	JScrollPane scrollPane;
 	private Menu menu = Menu.getInstance();
 	private JCheckBox nutFreeCheckBox, glutenFreeCheckBox, vegetarianCheckBox, veganCheckBox;
 	private JPanel menuPane;
@@ -36,7 +38,7 @@ public class AddCourseToDinerScreen extends JDialog {
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
-
+		
 		contentPanel.setLayout(new FlowLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 
@@ -48,7 +50,8 @@ public class AddCourseToDinerScreen extends JDialog {
 
 		getContentPane().add(this.menuPane, BorderLayout.EAST);
 
-		getContentPane().add(contentPanel, BorderLayout.CENTER);
+		this.scrollPane = new JScrollPane(this.menuPane);
+		this.getContentPane().add(this.scrollPane, BorderLayout.CENTER);
 		{
 			JPanel buttonPane = new JPanel();
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
