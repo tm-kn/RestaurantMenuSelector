@@ -26,7 +26,7 @@ public class OrderScreen extends JFrame {
 	private Container cp;
 	private	JScrollPane scrollPane;
 	private JButton tableChoiceButton, addDinerButton;
-	private JPanel centrePanel, dinersPanel, tableChoicePanel;
+	private JPanel northPane, southPane, centrePane, dinersPanel, tableChoicePanel;
 	private JLabel orderHeadingLabel, tableNumberLabel, dinersHeadingLabel, totalPriceLabel;
 
 	/**
@@ -37,6 +37,9 @@ public class OrderScreen extends JFrame {
 		this.cp = this.getContentPane();
 		this.cp.setLayout(new BorderLayout());
 
+		// North pane
+		this.northPane = new JPanel();
+		
 		this.orderHeadingLabel = new JLabel();
 		this.orderHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 75.0));
 
@@ -62,9 +65,33 @@ public class OrderScreen extends JFrame {
 			}
 
 		});
+		
+		// Centre pane
+		this.centrePane = new JPanel();
+		this.centrePane.setLayout(new BoxLayout(this.centrePane, BoxLayout.Y_AXIS));
 
+		this.scrollPane = new JScrollPane(this.centrePane);
+		
+		this.dinersPanel = new JPanel();
+		this.dinersPanel.setLayout(new BoxLayout(this.dinersPanel, BoxLayout.Y_AXIS));
+
+		this.tableChoicePanel = new JPanel();
+		this.tableChoicePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+		this.tableChoicePanel.add(this.tableNumberLabel);
+		this.tableChoicePanel.add(this.tableChoiceButton);
+
+		this.northPane.add(this.orderHeadingLabel);
+		this.northPane.add(this.tableChoicePanel);
+		
+		this.centrePane.add(this.dinersHeadingLabel);
+		this.centrePane.add(this.dinersPanel);
+		
+		// South pane
+		this.southPane = new JPanel();
+		
 		this.totalPriceLabel = new JLabel();
-
+		
 		this.addDinerButton = new JButton("Add another diner");
 		this.addDinerButton.addActionListener(new ActionListener() {
 
@@ -76,34 +103,22 @@ public class OrderScreen extends JFrame {
 			}
 
 		});
-
-		this.centrePanel = new JPanel();
-		this.centrePanel.setLayout(new BoxLayout(this.centrePanel, BoxLayout.Y_AXIS));
-
-		this.dinersPanel = new JPanel();
-		this.dinersPanel.setLayout(new BoxLayout(this.dinersPanel, BoxLayout.Y_AXIS));
-
-		this.tableChoicePanel = new JPanel();
-		this.tableChoicePanel.setLayout(new FlowLayout(FlowLayout.LEFT));
-
-		this.tableChoicePanel.add(this.tableNumberLabel);
-		this.tableChoicePanel.add(this.tableChoiceButton);
-
-		this.centrePanel.add(this.orderHeadingLabel);
-		this.centrePanel.add(this.tableChoicePanel);
-		this.centrePanel.add(this.dinersHeadingLabel);
-		this.centrePanel.add(this.dinersPanel);
-		this.centrePanel.add(this.totalPriceLabel);
-		this.centrePanel.add(this.addDinerButton);
-
-		this.scrollPane = new JScrollPane(this.centrePanel);
+		
+		this.southPane.add(this.totalPriceLabel);
+		this.southPane.add(this.addDinerButton);
+		
+		// Content pane
+		this.cp.add(this.northPane, BorderLayout.NORTH);
 		this.cp.add(this.scrollPane, BorderLayout.CENTER);
-
+		this.cp.add(this.southPane, BorderLayout.SOUTH);
+		
 		this.refreshData();
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.pack();
 		this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		
+		
 
 	}
 
