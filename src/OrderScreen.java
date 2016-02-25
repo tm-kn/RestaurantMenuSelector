@@ -187,6 +187,7 @@ public class OrderScreen extends JFrame {
 					public void run() {
 						try {
 							AddCourseToDinerScreen dialog = new AddCourseToDinerScreen(OrderScreen.this, diner);
+							dialog.setLocationRelativeTo(OrderScreen.this);
 							dialog.setVisible(true);
 						} catch (Exception exception) {
 							exception.printStackTrace();
