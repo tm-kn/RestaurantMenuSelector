@@ -15,6 +15,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
@@ -23,6 +24,7 @@ public class OrderScreen extends JFrame {
 	static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 	private Order order = new Order();
 	private Container cp;
+	private	JScrollPane scrollPane;
 	private JButton tableChoiceButton, addDinerButton;
 	private JPanel centrePanel, dinersPanel, tableChoicePanel;
 	private JLabel orderHeadingLabel, tableNumberLabel, dinersHeadingLabel, totalPriceLabel;
@@ -33,7 +35,7 @@ public class OrderScreen extends JFrame {
 	public OrderScreen() {
 		super("Restaurant Menu Selector - Order Screen");
 		this.cp = this.getContentPane();
-		this.cp.setLayout(new FlowLayout(FlowLayout.LEFT));
+		this.cp.setLayout(new BorderLayout());
 
 		this.orderHeadingLabel = new JLabel();
 		this.orderHeadingLabel.setFont(this.orderHeadingLabel.getFont().deriveFont((float) 75.0));
@@ -94,7 +96,8 @@ public class OrderScreen extends JFrame {
 		this.centrePanel.add(this.totalPriceLabel);
 		this.centrePanel.add(this.addDinerButton);
 
-		this.cp.add(this.centrePanel);
+		this.scrollPane = new JScrollPane(this.centrePanel);
+		this.cp.add(this.scrollPane, BorderLayout.CENTER);
 
 		this.refreshData();
 		this.setLocationRelativeTo(null);
