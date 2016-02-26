@@ -8,16 +8,22 @@ import java.util.List;
  *
  */
 public class Order {
-
+	
+	final static int ORDERING = 1;
+	final static int ORDERED = 2;
+	final static int IN_PREPARATION = 3;
+	final static int SERVED = 4;
 	private int number;
 	private List<Diner> diners = new ArrayList<Diner>();
 	private Table table;
+	private int status;
 
 	/**
 	 * Constructs an Order instance.
 	 */
 	public Order() {
 		this.number = System.identityHashCode(this);
+		this.status = Order.ORDERING;
 		this.addDiner(new Diner());
 	}
 
@@ -138,5 +144,79 @@ public class Order {
 	 */
 	public Table getTable() {
 		return this.table;
+	}
+
+	/**
+	 * Gets a status of the order.
+	 * @return returns integer of the status. Statuses are defined through constants on the class
+	 */
+	public int getStatus() {
+		return status;
+	}
+
+	/**
+	 * Sets the status of the order
+	 * @param status	use constants on Order class
+	 */
+	public void setStatus(int status) {
+		this.status = status;
+	}
+	
+	/**
+	 * Checks if the status is ordered
+	 * @return boolean
+	 */
+	public boolean isOrdered() {
+		return this.status == Order.ORDERED;
+	}
+	
+	/**
+	 * Checks if the status is in preparation
+	 * @return boolean
+	 */
+	public boolean isInPreparation() {
+		return this.status == Order.IN_PREPARATION;
+	}
+	
+	/**
+	 * Checks if the order has been already served
+	 * @return boolean
+	 */
+	public boolean isServer() {
+		return this.status == Order.SERVED;
+	}
+	
+	public boolean doesOrderContainAnyCourse() {
+		for(Diner diner : this.diners) {
+			if(diner.getCourses().size() > 0) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	/**
+	 * Checks if the order can be paid for.
+	 * @return boolean
+	 */
+	public boolean isReadyToPay() {
+		
+		// If table has been chosen
+		if(this.table == null) {
+			return false;
+		}
+		
+		// If there's at least one diner
+		if(this.diners.size() == 0) {
+			return false;
+		}
+		
+		// If there's at least one item ordered
+		if(!this.doesOrderContainAnyCourse()) {
+			return false;
+		}
+		
+		return true;
 	}
 }
