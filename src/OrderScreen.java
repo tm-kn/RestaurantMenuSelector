@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -29,7 +30,7 @@ public class OrderScreen extends JFrame {
 	private	JScrollPane dinersScrollPane;
 	private JButton tableChoiceButton, addDinerButton, payButton;
 	private JPanel northPane, southPane, centrePane, dinersHeadingPane, orderHeadingPane, dinersPane, tableChoicePane;
-	private JLabel orderHeadingLabel, tableNumberLabel, dinersHeadingLabel, totalPriceLabel;
+	private JLabel orderHeadingLabel, tableNumberLabel, tableChoiceWarning, dinersHeadingLabel, totalPriceLabel;
 
 	/**
 	 * Create the dialog.
@@ -67,11 +68,16 @@ public class OrderScreen extends JFrame {
 
 		});
 		
+		this.tableChoiceWarning = new JLabel("Please, choose a table to continue with the order.");
+		this.tableChoiceWarning.setFont(this.tableChoiceWarning.getFont().deriveFont(Font.BOLD));
+		this.tableChoiceWarning.setForeground(Color.RED);
+		
 		this.tableChoicePane = new JPanel();
 		this.tableChoicePane.setLayout(new FlowLayout(FlowLayout.LEFT));
-
+		
 		this.tableChoicePane.add(this.tableNumberLabel);
 		this.tableChoicePane.add(this.tableChoiceButton);
+		this.tableChoicePane.add(this.tableChoiceWarning);
 		
 		this.dinersHeadingPane = new JPanel();
 		this.dinersHeadingPane.setLayout(new FlowLayout(FlowLayout.LEFT));
@@ -121,7 +127,7 @@ public class OrderScreen extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Pressed pay button");
+				System.out.println("Pressed payfg button");
 			}
 
 		});
@@ -147,6 +153,7 @@ public class OrderScreen extends JFrame {
 
 		if (this.order.getTable() != null) {
 			tableNumber = String.valueOf(this.order.getTable().getNumber());
+			this.tableChoiceWarning.setVisible(false);
 		}
 
 		this.tableNumberLabel.setText("Table number: " + tableNumber);
@@ -169,7 +176,7 @@ public class OrderScreen extends JFrame {
 			this.dinersPane.add(new JLabel("No diners defined."));
 		}
 		
-		if(this.order.getTotalPrice() > 0.0) {
+		if(this.order.isReadyToPay()) {
 			this.payButton.setEnabled(true);
 		}
 		else
@@ -184,7 +191,7 @@ public class OrderScreen extends JFrame {
 		JPanel dinerRow = new JPanel();
 		dinerRow.setLayout(new BoxLayout(dinerRow, BoxLayout.Y_AXIS));
 		
-		// Create a panel for the heading of the row
+		// Create a panel for three heading of the row
 		JPanel dinerHeading = new JPanel();
 		dinerHeading.setLayout(new BoxLayout(dinerHeading, BoxLayout.X_AXIS));
 
