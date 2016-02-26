@@ -20,6 +20,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 public class AddCourseToDinerScreen extends JDialog {
@@ -61,6 +62,14 @@ public class AddCourseToDinerScreen extends JDialog {
 		this.refreshMenuPane();
 		this.scrollPane = new JScrollPane(this.menuPane);
 		
+		// Make the scroll pane to start at the top
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				AddCourseToDinerScreen.this.scrollPane.getVerticalScrollBar().setValue(0);
+			}
+		});
+		
 		// Button pane
 		this.buttonPane = new JPanel();
 		this.buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -84,6 +93,7 @@ public class AddCourseToDinerScreen extends JDialog {
 		
 		
 		this.pack();
+
 	}
 
 	private JPanel getMenuPane() {
