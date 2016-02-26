@@ -127,7 +127,13 @@ public class OrderScreen extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Pressed payfg button");
+				try{
+					PaymentDialog dialog = new PaymentDialog(OrderScreen.this);
+					dialog.setLocationRelativeTo(OrderScreen.this);
+					dialog.setVisible(true);
+				} catch(Exception exception) {
+					exception.printStackTrace();
+				}
 			}
 
 		});
