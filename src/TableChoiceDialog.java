@@ -80,6 +80,8 @@ public class TableChoiceDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+		
+		this.pack();
 	}
 
 }

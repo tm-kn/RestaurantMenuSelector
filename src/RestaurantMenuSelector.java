@@ -6,7 +6,7 @@ import javax.swing.SwingUtilities;
  * @author Tomasz Knapik <u1562595@unimail.hud.ac.uk>
  *
  */
-public class Programme {
+public class RestaurantMenuSelector {
 
 	public static void main(String[] args) {
 		SwingUtilities.invokeLater(new Runnable() {

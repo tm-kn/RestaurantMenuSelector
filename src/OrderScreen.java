@@ -11,6 +11,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -59,7 +60,6 @@ public class OrderScreen extends JFrame {
 				try {
 					TableChoiceDialog dialog = new TableChoiceDialog(OrderScreen.this);
 					dialog.setLocationRelativeTo(OrderScreen.this);
-					dialog.pack();
 					dialog.setVisible(true);
 				} catch (Exception exception) {
 					exception.printStackTrace();
@@ -93,7 +93,7 @@ public class OrderScreen extends JFrame {
 		
 		// Centre pane
 		this.centrePane = new JPanel();
-		this.centrePane.setLayout(new BoxLayout(this.centrePane, BoxLayout.Y_AXIS));		
+		this.centrePane.setLayout(new BoxLayout(this.centrePane, BoxLayout.Y_AXIS));
 		
 		this.dinersPane = new JPanel();
 		this.dinersPane.setLayout(new BoxLayout(this.dinersPane, BoxLayout.Y_AXIS));
@@ -151,7 +151,7 @@ public class OrderScreen extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.pack();
-		this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
+		// this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 
 	private void insertDataToWindowFromOrderObject() {
@@ -168,20 +168,25 @@ public class OrderScreen extends JFrame {
 
 		// Remove all the diners from the screen
 		this.dinersPane.removeAll();
-		this.dinersPane.repaint();
-		this.dinersPane.revalidate();
+		
 
 		// Generate all the diners again
 		if (this.order.getDiners().size() > 0) {
 			int i = 1;
 			for (Diner diner : this.order.getDiners()) {
 				this.dinersPane.add(this.generateDinerRow(diner, i));
+				this.dinersPane.add(Box.createRigidArea(new Dimension(0, 50)));
 				i++;
 			}
 		} else {
 			this.dinersPane.add(new JLabel("No diners defined."));
 		}
 		
+		this.dinersPane.repaint();
+		this.dinersPane.revalidate();
+		this.pack();
+		
+		// Pay button
 		if(this.order.isReadyToPay()) {
 			this.payButton.setEnabled(true);
 		}
@@ -284,7 +289,6 @@ public class OrderScreen extends JFrame {
 		}
 		
 		dinerRow.add(coursesPane);
-
 		return dinerRow;
 	}
 
