@@ -62,14 +62,6 @@ public class AddCourseToDinerScreen extends JDialog {
 		this.refreshMenuPane();
 		this.scrollPane = new JScrollPane(this.menuPane);
 		
-		// Make the scroll pane to start at the top
-		SwingUtilities.invokeLater(new Runnable() {
-			@Override
-			public void run() {
-				AddCourseToDinerScreen.this.scrollPane.getVerticalScrollBar().setValue(0);
-			}
-		});
-		
 		// Button pane
 		this.buttonPane = new JPanel();
 		this.buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -90,7 +82,6 @@ public class AddCourseToDinerScreen extends JDialog {
 		this.cp.add(this.filterPane, BorderLayout.NORTH);
 		this.cp.add(this.scrollPane, BorderLayout.CENTER);
 		this.cp.add(this.buttonPane, BorderLayout.SOUTH);
-		
 		
 		this.pack();
 
@@ -220,7 +211,6 @@ public class AddCourseToDinerScreen extends JDialog {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				AddCourseToDinerScreen.this.refreshMenuPane();
-
 			}
 
 		});
@@ -254,6 +244,16 @@ public class AddCourseToDinerScreen extends JDialog {
 		this.menuPane.removeAll();
 		this.menuPane.revalidate();
 		this.getMenuPane();
+		this.revalidate();
+		this.pack();
+		
+		// Make the scroll pane to start at the top
+		SwingUtilities.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				AddCourseToDinerScreen.this.scrollPane.getVerticalScrollBar().setValue(0);
+			}
+		});
 	}
 
 }
