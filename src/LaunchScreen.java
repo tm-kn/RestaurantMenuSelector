@@ -17,7 +17,7 @@ public class LaunchScreen extends JFrame {
 
 	private Container cp;
 	private JButton openOrderScreenButton, openAdministrationScreenButton, exitProgrammeButton;
-	private JPanel mainPanelCentre, panelCentre1, panelCentre2, panelCentre3;
+	private JPanel mainPanelCentre;
 	static final String ADMIN_PASSWORD = "admin123";
 
 	/**
