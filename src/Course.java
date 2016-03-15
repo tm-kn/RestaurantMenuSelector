@@ -9,7 +9,9 @@ import java.lang.reflect.Method;
  *
  */
 public class Course {
-
+	
+	final static String[] COURSE_TYPES = {"Main", "Dessert", "Drink", "Fish", "Starter"};
+	private String courseType;
 	private String name;
 	private Double price;
 	private int calories;
@@ -31,9 +33,9 @@ public class Course {
 	 * @param vegetarian
 	 * @param glutenFree
 	 */
-	public Course(String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan,
+	public Course(String courseType, String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan,
 			Boolean vegetarian, Boolean glutenFree) {
-		this.name = name;
+		this.setName(name);
 		this.price = price;
 		this.calories = calories;
 		this.description = description;
@@ -195,47 +197,24 @@ public class Course {
 	public void setGlutenFree(Boolean glutenFree) {
 		this.glutenFree = glutenFree;
 	}
-
+	
 	/**
-	 * Gets course type name of an instance. To be used on an instance only!
-	 * 
-	 * @return course type name
+	 * Accessor for course type
+	 * @return courseType
 	 */
-	public String getCourseTypeName() {
-		return Course.getCourseTypeNameOfClassCourseType(this.getClass());
+	public String getCourseType() {
+		return courseType;
 	}
 
 	/**
-	 * Gets course type name of a class. To be used as a static method only!
-	 * 
-	 * @return course type name
+	 * Mutator for course type
+	 * Needs to be compatible with COURSE_TYPES.
+	 * @param courseType type of course
 	 */
-	public static String getCourseTypeNameOfClass() {
-		return "Other";
+	public void setCourseType(String courseType) {
+		this.courseType = courseType;
+		// TODO: check course type
 	}
-
-	/**
-	 * Gets course type name of a provided course class.
-	 * 
-	 * @param cls
-	 *            Class which is Course or inherits from Course.
-	 * @return course type name
-	 */
-	static public String getCourseTypeNameOfClassCourseType(Class<?> cls) {
-		Method m = null;
-		try {
-			m = cls.getMethod("getCourseTypeNameOfClass");
-		} catch (NoSuchMethodException | SecurityException e) {
-			e.printStackTrace();
-			return "Other";
-		}
-
-		try {
-			return m.invoke(new Object()).toString();
-		} catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
-			return "Other";
-		}
-
-	}
+	
+	
 }
