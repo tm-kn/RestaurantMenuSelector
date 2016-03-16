@@ -10,8 +10,14 @@ import exceptions.InvalidCourseTypeException;
  *
  */
 public class Course {
+	final static String MAIN = "Main";
+	final static String DESSERT = "Dessert";
+	final static String DRINK = "Drink";
+	final static String FISH = "Fish";
+	final static String STARTER = "Starter";
+	final static String OTHER = "Other";
+	final static String[] COURSE_TYPES = {MAIN, DESSERT, DRINK, FISH, STARTER, OTHER};
 	
-	final static String[] COURSE_TYPES = {"Main", "Dessert", "Drink", "Fish", "Starter"};
 	private String courseType;
 	private String name;
 	private double price;
