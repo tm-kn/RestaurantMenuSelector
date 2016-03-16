@@ -1,20 +1,22 @@
 import javax.swing.SwingUtilities;
 
-/**
- * Start point for the programme.
- * 
- * @author Tomasz Knapik <u1562595@unimail.hud.ac.uk>
- *
- */
 public class RestaurantMenuSelector {
-
+	
+	private Menu menu;
+	
 	public static void main(String[] args) {
+		RestaurantMenuSelector programme = new RestaurantMenuSelector();
+	}
+	
+	public RestaurantMenuSelector() {
+		this.menu = new Menu();
+		
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
-					LaunchScreen frame = new LaunchScreen();
+					LaunchScreen frame = new LaunchScreen(RestaurantMenuSelectorDemo.this.menu);
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -23,7 +25,5 @@ public class RestaurantMenuSelector {
 			}
 
 		});
-
 	}
-
 }
