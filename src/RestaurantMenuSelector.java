@@ -16,7 +16,7 @@ public class RestaurantMenuSelector {
 			@Override
 			public void run() {
 				try {
-					LaunchScreen frame = new LaunchScreen(RestaurantMenuSelectorDemo.this.menu);
+					LaunchScreen frame = new LaunchScreen(RestaurantMenuSelector.this.menu);
 					frame.setLocationRelativeTo(null);
 					frame.setVisible(true);
 				} catch (Exception e) {
