@@ -1,30 +1,31 @@
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
+import exceptions.InvalidAdministrationPasswordException;
+
 public class LaunchScreen extends JFrame {
 
+	private static final long serialVersionUID = 8600468294910125335L;
 	private Container cp;
 	private JButton openOrderScreenButton, openAdministrationScreenButton, exitProgrammeButton;
 	private JPanel mainPanelCentre;
-	static final String ADMIN_PASSWORD = "admin123";
+	private Menu menu;
 
 	/**
 	 * Create the frame.
 	 */
-	public LaunchScreen() {
+	public LaunchScreen(Menu menu) {
 		super("Restaurant Menu Selector - Launch Screen");
+		this.menu = menu;
+		
 		this.cp = this.getContentPane();
 		this.cp.setLayout(new BorderLayout());
 
@@ -41,7 +42,7 @@ public class LaunchScreen extends JFrame {
 					@Override
 					public void run() {
 						try {
-							JFrame orderScreen = new OrderScreen();
+							JFrame orderScreen = new OrderScreen(LaunchScreen.this.menu);
 							orderScreen.setVisible(true);
 						} catch (Exception exception) {
 							exception.printStackTrace();
@@ -60,21 +61,29 @@ public class LaunchScreen extends JFrame {
 				String inputValue = (String) JOptionPane.showInputDialog(LaunchScreen.this,
 						"Please enter administration password", "Enter password", JOptionPane.WARNING_MESSAGE);
 
-				// User clicks cancel
+				// If user clicks cancel, do nothing
 				if (inputValue == null) {
 					return;
 				}
 
-				// Check if admin password is valid.
-				if (!inputValue.equals(LaunchScreen.ADMIN_PASSWORD)) {
-					JOptionPane.showMessageDialog(LaunchScreen.this, "You have entered wrong password.",
-							"Wrong password", JOptionPane.ERROR_MESSAGE);
-					return;
-				}
+				// Open administration window
+				SwingUtilities.invokeLater(new Runnable() {
 
-				// TODO: Open the administration screen window
+					@Override
+					public void run() {
+						try {
+							AdministrationScreen frame = new AdministrationScreen(LaunchScreen.this.menu, inputValue);
+							frame.setLocationRelativeTo(LaunchScreen.this);
+							frame.setVisible(true);
+						} catch(InvalidAdministrationPasswordException e) {
+							JOptionPane.showMessageDialog(LaunchScreen.this, "You have entered wrong password.",
+									"Wrong password", JOptionPane.ERROR_MESSAGE);
+						}					
+					}
+					
+				});
+				
 			}
-
 		});
 
 		this.exitProgrammeButton.addActionListener(new ActionListener() {
