@@ -8,6 +8,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -17,11 +18,14 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
+
+import exceptions.EmptyMenuException;
 
 public class AddCourseToDinerScreen extends JDialog {
 
@@ -88,8 +92,7 @@ public class AddCourseToDinerScreen extends JDialog {
 	}
 
 	private JPanel getMenuPane() {
-		// Get courses filtered with the filter pane
-		List<Course> coursesList = this.getFilteredCoursesList();
+		List<Course> coursesList = new ArrayList<Course>();
 		
 		// Sort courses according to their category, e.g. main courses, desserts, fish courses, drinks, etc.
 		Map<String, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);
