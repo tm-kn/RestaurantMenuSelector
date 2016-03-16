@@ -4,29 +4,25 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 
 import exceptions.EmptyMenuException;
 
 public class OrderScreen extends JFrame {
 
+	private static final long serialVersionUID = 1744313213682203695L;
 	static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 	private Order order = new Order();
 	private Menu menu;
@@ -46,7 +42,7 @@ public class OrderScreen extends JFrame {
 		// Check if menu is empty and close window if it is
 		try {
 			this.menu.getCourses();
-		} catch (EmptyMenuException e) {
+		} catch(EmptyMenuException e) {
 			JOptionPane.showMessageDialog(this,
 				    "The menu is empty. Cannot choose a dish.\nAsk staff for assistance.",
 				    "The menu is empty",

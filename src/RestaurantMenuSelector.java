@@ -5,7 +5,7 @@ public class RestaurantMenuSelector {
 	protected Menu menu;
 	
 	public static void main(String[] args) {
-		RestaurantMenuSelector programme = new RestaurantMenuSelector();
+		new RestaurantMenuSelector();
 	}
 	
 	public RestaurantMenuSelector() {
