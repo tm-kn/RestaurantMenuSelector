@@ -2,7 +2,7 @@ import javax.swing.SwingUtilities;
 
 public class RestaurantMenuSelector {
 	
-	private Menu menu;
+	protected Menu menu;
 	
 	public static void main(String[] args) {
 		RestaurantMenuSelector programme = new RestaurantMenuSelector();
