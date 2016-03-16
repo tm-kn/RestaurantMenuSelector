@@ -47,7 +47,7 @@ public class AddCourseToDinerScreen extends JDialog {
 		this.diner = diner;
 		
 		// Some basics
-		this.menu = Menu.getInstance();
+		this.menu = this.parent.getMenu();
 		this.cp = this.getContentPane();		
 		this.cp.setLayout(new BorderLayout());
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -92,19 +92,19 @@ public class AddCourseToDinerScreen extends JDialog {
 		List<Course> coursesList = this.getFilteredCoursesList();
 		
 		// Sort courses according to their category, e.g. main courses, desserts, fish courses, drinks, etc.
-		Map<Class<?>, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);
+		Map<String, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);
 		
 		JPanel courseRowsList = new JPanel();
 		courseRowsList.setLayout(new BoxLayout(courseRowsList, BoxLayout.Y_AXIS));
 
-		for (Map.Entry<Class<?>, List<Course>> entry : sortedCoursesList.entrySet()) {
-			Class<?> key = entry.getKey();
+		for (Map.Entry<String, List<Course>> entry : sortedCoursesList.entrySet()) {
+			String key = entry.getKey();
 			List<Course> value = entry.getValue();
 			
 			JPanel courseTypePane = new JPanel();
 			courseTypePane.setLayout(new FlowLayout(FlowLayout.LEFT, 20, 5));
 			
-			JLabel courseTypeLabel = new JLabel(Course.getCourseTypeNameOfClassCourseType(key));
+			JLabel courseTypeLabel = new JLabel(key);
 			courseTypeLabel.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 25));
 			
 			courseTypePane.add(courseTypeLabel);

@@ -176,7 +176,7 @@ public class PaymentDialog extends JDialog {
 		this.parent.dispose();
 		
 		try {
-			OrderScreen frame = new OrderScreen();
+			OrderScreen frame = new OrderScreen(this.parent.getMenu());
 			frame.setVisible(true);
 		} catch (Exception e) {
 			e.printStackTrace();
