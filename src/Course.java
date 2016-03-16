@@ -1,5 +1,6 @@
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
+import java.util.Arrays;
+
+import exceptions.InvalidCourseTypeException;
 
 /**
  * Contains information about a course and is a base for other types of a
@@ -13,13 +14,13 @@ public class Course {
 	final static String[] COURSE_TYPES = {"Main", "Dessert", "Drink", "Fish", "Starter"};
 	private String courseType;
 	private String name;
-	private Double price;
+	private double price;
 	private int calories;
 	private String description;
-	private Boolean nutFree = false;
-	private Boolean vegan = false;
-	private Boolean vegetarian = false;
-	private Boolean glutenFree = false;
+	private boolean nutFree = false;
+	private boolean vegan = false;
+	private boolean vegetarian = false;
+	private boolean glutenFree = false;
 
 	/**
 	 * Constructor method for a course.
@@ -33,16 +34,17 @@ public class Course {
 	 * @param vegetarian
 	 * @param glutenFree
 	 */
-	public Course(String courseType, String name, Double price, int calories, String description, Boolean nutFree, Boolean vegan,
-			Boolean vegetarian, Boolean glutenFree) {
+	public Course(String courseType, String name, double price, int calories, String description, boolean nutFree, boolean vegan,
+			boolean vegetarian, boolean glutenFree) {
+		this.setCourseType(courseType);
 		this.setName(name);
-		this.price = price;
-		this.calories = calories;
-		this.description = description;
-		this.nutFree = nutFree;
-		this.vegan = vegan;
-		this.vegetarian = vegetarian;
-		this.glutenFree = glutenFree;
+		this.setPrice(price);
+		this.setCalories(calories);
+		this.setDescription(description);
+		this.setNutFree(nutFree);
+		this.setVegan(vegan);
+		this.setVegetarian(vegetarian);
+		this.setGlutenFree(glutenFree);
 	}
 
 	/**
@@ -60,6 +62,13 @@ public class Course {
 	 * @param name
 	 */
 	public void setName(String name) {
+		if(name == null) {
+			throw new NullPointerException();
+		}
+		
+		if(name.length() < 1) {
+			throw new IllegalArgumentException("Name must constist from at least 1 character.");
+		}
 		this.name = name;
 	}
 
@@ -68,7 +77,7 @@ public class Course {
 	 * 
 	 * @return price
 	 */
-	public Double getPrice() {
+	public double getPrice() {
 		return price;
 	}
 
@@ -77,7 +86,11 @@ public class Course {
 	 * 
 	 * @param price
 	 */
-	public void setPrice(Double price) {
+	public void setPrice(double price) {
+		if(price < 0.0) {
+			throw new IllegalArgumentException("Price cannot be less than zero.");
+		}
+		
 		this.price = price;
 	}
 
@@ -105,6 +118,10 @@ public class Course {
 	 * @param calories
 	 */
 	public void setCalories(int calories) {
+		if(calories < 0) {
+			throw new IllegalArgumentException("Calories cannot be less than zero");
+		}
+		
 		this.calories = calories;
 	}
 
@@ -131,7 +148,7 @@ public class Course {
 	 * 
 	 * @return nut free
 	 */
-	public Boolean getNutFree() {
+	public boolean getNutFree() {
 		return nutFree;
 	}
 
@@ -140,7 +157,7 @@ public class Course {
 	 * 
 	 * @param nutFree
 	 */
-	public void setNutFree(Boolean nutFree) {
+	public void setNutFree(boolean nutFree) {
 		this.nutFree = nutFree;
 	}
 
@@ -149,7 +166,7 @@ public class Course {
 	 * 
 	 * @return vegan meal?
 	 */
-	public Boolean getVegan() {
+	public boolean getVegan() {
 		return vegan;
 	}
 
@@ -158,7 +175,7 @@ public class Course {
 	 * 
 	 * @param vegan
 	 */
-	public void setVegan(Boolean vegan) {
+	public void setVegan(boolean vegan) {
 		this.vegan = vegan;
 	}
 
@@ -167,7 +184,7 @@ public class Course {
 	 * 
 	 * @return vegetarian meal?
 	 */
-	public Boolean getVegetarian() {
+	public boolean getVegetarian() {
 		return vegetarian;
 	}
 
@@ -176,7 +193,7 @@ public class Course {
 	 * 
 	 * @param vegetarian
 	 */
-	public void setVegetarian(Boolean vegetarian) {
+	public void setVegetarian(boolean vegetarian) {
 		this.vegetarian = vegetarian;
 	}
 
@@ -185,7 +202,7 @@ public class Course {
 	 * 
 	 * @return gluten-free meal?
 	 */
-	public Boolean getGlutenFree() {
+	public boolean getGlutenFree() {
 		return glutenFree;
 	}
 
@@ -194,7 +211,7 @@ public class Course {
 	 * 
 	 * @param glutenFree
 	 */
-	public void setGlutenFree(Boolean glutenFree) {
+	public void setGlutenFree(boolean glutenFree) {
 		this.glutenFree = glutenFree;
 	}
 	
@@ -210,10 +227,14 @@ public class Course {
 	 * Mutator for course type
 	 * Needs to be compatible with COURSE_TYPES.
 	 * @param courseType type of course
+	 * @throws InvalidCourseTypeException 
 	 */
 	public void setCourseType(String courseType) {
+		if(!Arrays.asList(Course.COURSE_TYPES).contains(courseType)) {
+			throw new InvalidCourseTypeException();
+		}
+		
 		this.courseType = courseType;
-		// TODO: check course type
 	}
 	
 	
