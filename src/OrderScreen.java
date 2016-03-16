@@ -27,6 +27,7 @@ public class OrderScreen extends JFrame {
 
 	static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 	private Order order = new Order();
+	private Menu menu;
 	private Container cp;
 	private	JScrollPane dinersScrollPane;
 	private JButton tableChoiceButton, addDinerButton, payButton;
@@ -36,8 +37,10 @@ public class OrderScreen extends JFrame {
 	/**
 	 * Create the dialog.
 	 */
-	public OrderScreen() {
+	public OrderScreen(Menu menu) {
 		super("Restaurant Menu Selector - Order Screen");
+		this.menu = menu;
+		
 		this.cp = this.getContentPane();
 		this.cp.setLayout(new BorderLayout());
 
@@ -356,14 +359,8 @@ public class OrderScreen extends JFrame {
 		this.insertDataToWindowFromOrderObject();
 	}
 
-	public static void main(String[] args) {
-		try {
-			OrderScreen frame = new OrderScreen();
-			frame.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
+	public Menu getMenu() {
+		return menu;
 	}
 
 }

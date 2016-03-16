@@ -18,13 +18,16 @@ public class LaunchScreen extends JFrame {
 	private Container cp;
 	private JButton openOrderScreenButton, openAdministrationScreenButton, exitProgrammeButton;
 	private JPanel mainPanelCentre;
+	private Menu menu;
 	static final String ADMIN_PASSWORD = "admin123";
 
 	/**
 	 * Create the frame.
 	 */
-	public LaunchScreen() {
+	public LaunchScreen(Menu menu) {
 		super("Restaurant Menu Selector - Launch Screen");
+		this.menu = menu;
+		
 		this.cp = this.getContentPane();
 		this.cp.setLayout(new BorderLayout());
 
@@ -41,7 +44,7 @@ public class LaunchScreen extends JFrame {
 					@Override
 					public void run() {
 						try {
-							JFrame orderScreen = new OrderScreen();
+							JFrame orderScreen = new OrderScreen(LaunchScreen.this.menu);
 							orderScreen.setVisible(true);
 						} catch (Exception exception) {
 							exception.printStackTrace();
