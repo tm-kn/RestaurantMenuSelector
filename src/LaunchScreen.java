@@ -1,12 +1,8 @@
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
-import java.awt.Dialog;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -17,6 +13,7 @@ import exceptions.InvalidAdministrationPasswordException;
 
 public class LaunchScreen extends JFrame {
 
+	private static final long serialVersionUID = 8600468294910125335L;
 	private Container cp;
 	private JButton openOrderScreenButton, openAdministrationScreenButton, exitProgrammeButton;
 	private JPanel mainPanelCentre;

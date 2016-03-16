@@ -12,9 +12,13 @@ import javax.swing.border.EmptyBorder;
 
 public class TableChoiceDialog extends JDialog {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4376225943712631190L;
 	private final JPanel contentPanel = new JPanel();
 	private TableList tableList = TableList.getInstance();
-	private JComboBox tableChoiceComboBox;
+	private JComboBox<Table> tableChoiceComboBox;
 	private OrderScreen parent;
 
 	/**
@@ -35,7 +39,7 @@ public class TableChoiceDialog extends JDialog {
 
 			getContentPane().add(choicePane, BorderLayout.CENTER);
 			{
-				tableChoiceComboBox = new JComboBox(this.tableList.getTables().toArray());
+				tableChoiceComboBox = new JComboBox<Table>((Table[]) this.tableList.getTables().toArray());
 				Table selectedTable = TableChoiceDialog.this.parent.getOrder().getTable();
 
 				if (selectedTable != null) {

@@ -1,5 +1,4 @@
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
@@ -8,7 +7,6 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -18,17 +16,15 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
 
-import exceptions.EmptyMenuException;
 
 public class AddCourseToDinerScreen extends JDialog {
 
+	private static final long serialVersionUID = -7029260598028241556L;
 	final static Font FONT_30 = new Font(Font.SANS_SERIF, Font.PLAIN, 20);
 	private JPanel buttonPane, menuPane, filterPane;
 	private Container cp;
@@ -92,7 +88,7 @@ public class AddCourseToDinerScreen extends JDialog {
 	}
 
 	private JPanel getMenuPane() {
-		List<Course> coursesList = new ArrayList<Course>();
+		List<Course> coursesList = this.getFilteredCoursesList();
 		
 		// Sort courses according to their category, e.g. main courses, desserts, fish courses, drinks, etc.
 		Map<String, List<Course>> sortedCoursesList = Menu.groupByCourseType(coursesList);

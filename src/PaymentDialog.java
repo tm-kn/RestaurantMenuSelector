@@ -1,10 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dialog;
 import java.awt.FlowLayout;
-import java.awt.Frame;
-import java.awt.GraphicsConfiguration;
-import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DateFormat;
@@ -22,6 +18,7 @@ import javax.swing.JTextField;
 
 public class PaymentDialog extends JDialog {
 
+	private static final long serialVersionUID = 5522846541550447289L;
 	private Double totalAmount, changeAmount, amountPaid;
 	private Container cp;
 	private OrderScreen parent;

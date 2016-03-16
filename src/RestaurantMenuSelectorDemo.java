@@ -1,9 +1,7 @@
-import javax.swing.SwingUtilities;
-
 public class RestaurantMenuSelectorDemo extends RestaurantMenuSelector {
 	
 	public static void main(String[] args) {
-		RestaurantMenuSelectorDemo demo = new RestaurantMenuSelectorDemo();
+		new RestaurantMenuSelectorDemo();
 	}
 	
 	public RestaurantMenuSelectorDemo() {
