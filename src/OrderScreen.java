@@ -23,6 +23,8 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
+import exceptions.EmptyMenuException;
+
 public class OrderScreen extends JFrame {
 
 	static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
@@ -40,6 +42,27 @@ public class OrderScreen extends JFrame {
 	public OrderScreen(Menu menu) {
 		super("Restaurant Menu Selector - Order Screen");
 		this.menu = menu;
+		
+		// Check if menu is empty and close window if it is
+		try {
+			this.menu.getCourses();
+		} catch (EmptyMenuException e) {
+			JOptionPane.showMessageDialog(this,
+				    "The menu is empty. Cannot choose a dish.\nAsk staff for assistance.",
+				    "The menu is empty",
+				    JOptionPane.ERROR_MESSAGE);
+			
+			SwingUtilities.invokeLater(new Runnable() {
+
+				@Override
+				public void run() {
+					OrderScreen.this.dispose();
+				}
+				
+			});
+			
+			return;
+		}
 		
 		this.cp = this.getContentPane();
 		this.cp.setLayout(new BorderLayout());
@@ -60,13 +83,9 @@ public class OrderScreen extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				try {
-					TableChoiceDialog dialog = new TableChoiceDialog(OrderScreen.this);
-					dialog.setLocationRelativeTo(OrderScreen.this);
-					dialog.setVisible(true);
-				} catch (Exception exception) {
-					exception.printStackTrace();
-				}
+				TableChoiceDialog dialog = new TableChoiceDialog(OrderScreen.this);
+				dialog.setLocationRelativeTo(OrderScreen.this);
+				dialog.setVisible(true);
 			}
 
 		});
@@ -130,13 +149,9 @@ public class OrderScreen extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				try{
-					PaymentDialog dialog = new PaymentDialog(OrderScreen.this);
-					dialog.setLocationRelativeTo(OrderScreen.this);
-					dialog.setVisible(true);
-				} catch(Exception exception) {
-					exception.printStackTrace();
-				}
+				PaymentDialog dialog = new PaymentDialog(OrderScreen.this);
+				dialog.setLocationRelativeTo(OrderScreen.this);
+				dialog.setVisible(true);
 			}
 
 		});
@@ -227,13 +242,9 @@ public class OrderScreen extends JFrame {
 
 					@Override
 					public void run() {
-						try {
-							AddCourseToDinerScreen dialog = new AddCourseToDinerScreen(OrderScreen.this, diner);
-							dialog.setLocationRelativeTo(OrderScreen.this);
-							dialog.setVisible(true);
-						} catch (Exception exception) {
-							exception.printStackTrace();
-						}
+						AddCourseToDinerScreen dialog = new AddCourseToDinerScreen(OrderScreen.this, diner);
+						dialog.setLocationRelativeTo(OrderScreen.this);
+						dialog.setVisible(true);
 					}
 
 				});

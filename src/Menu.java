@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import exceptions.EmptyMenuException;
+
 /**
  * Menu contains courses, manages them and allows filtering and sorting them.
  * 
@@ -28,6 +30,10 @@ public class Menu {
 	 * @return list of courses
 	 */
 	public List<Course> getCourses() {
+		if(this.courses.size() == 0) {
+			throw new EmptyMenuException();
+		}
+		
 		return courses;
 	}
 
@@ -177,7 +183,7 @@ public class Menu {
 	 * @return filtered course list by their properties
 	 */
 	public List<Course> filterCoursesList(boolean nutFree, boolean vegan, boolean vegetarian, boolean glutenFree) {
-		return Menu.filterCoursesList(this.courses, nutFree, vegan, vegetarian, glutenFree);
+		return Menu.filterCoursesList(this.getCourses(), nutFree, vegan, vegetarian, glutenFree);
 	}
 
 	/**
@@ -242,6 +248,6 @@ public class Menu {
 	 *         particular type as value.
 	 */
 	public Map<String, List<Course>> groupByCourseType() {
-		return Menu.groupByCourseType(this.courses);
+		return Menu.groupByCourseType(this.getCourses());
 	}
 }
