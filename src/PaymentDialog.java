@@ -1,5 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -99,7 +100,8 @@ public class PaymentDialog extends JDialog {
 		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.setTitle("Pay for your order");
 		
-		this.pack();
+		// Set size
+		this.setSize(500, 200);
 	}
 	
 	private void refreshPaymentFormPane() {
@@ -117,21 +119,26 @@ public class PaymentDialog extends JDialog {
 		
 		this.paymentFormPane.revalidate();
 		this.paymentFormPane.repaint();
-		this.pack();
 	}
 	
 	private JPanel getCashPaymentForm() {
 		JPanel form = new JPanel();
-		form.setLayout(new FlowLayout());
+		form.setLayout(new BoxLayout(form, BoxLayout.X_AXIS));
 		
-		JTextField inputAmount = new JTextField("Amount");
+		JTextField inputAmount = new JTextField();
+		inputAmount.setSize(new Dimension(20, 10));
 		
 		JButton payButton = new JButton("Pay");
 		payButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				PaymentDialog.this.amountPaid = Double.valueOf(inputAmount.getText());
+				try {
+					PaymentDialog.this.amountPaid = Double.valueOf(inputAmount.getText());
+				} catch(NumberFormatException e1) {
+					PaymentDialog.this.addPaymentError("Make sure the amount is in correct format.");
+					return;
+				}
 							
 				if(PaymentDialog.this.amountPaid < PaymentDialog.this.totalAmount) {
 					PaymentDialog.this.addPaymentError("You gave less than you have to pay. Please pay at least £" + PaymentDialog.this.totalAmount + ".");

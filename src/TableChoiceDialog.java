@@ -39,7 +39,7 @@ public class TableChoiceDialog extends JDialog {
 
 			getContentPane().add(choicePane, BorderLayout.CENTER);
 			{
-				tableChoiceComboBox = new JComboBox<Table>((Table[]) this.tableList.getTables().toArray());
+				tableChoiceComboBox = new JComboBox<Table>((Table[]) this.tableList.getTables().toArray(new Table[this.tableList.getTables().size()]));
 				Table selectedTable = TableChoiceDialog.this.parent.getOrder().getTable();
 
 				if (selectedTable != null) {
