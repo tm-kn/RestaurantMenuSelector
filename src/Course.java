@@ -6,7 +6,7 @@ import exceptions.InvalidCourseTypeException;
  * Contains information about a course and is a base for other types of a
  * course.
  * 
- * @author Tomasz Knapik <u1562595@unimail.hud.ac.uk>
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
  *
  */
 public class Course {

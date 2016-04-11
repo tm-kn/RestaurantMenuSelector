@@ -10,11 +10,14 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+/**
+ * Dialog which allows user to choose a table
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class TableChoiceDialog extends JDialog {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -4376225943712631190L;
 	private final JPanel contentPanel = new JPanel();
 	private TableList tableList = TableList.getInstance();
@@ -23,6 +26,7 @@ public class TableChoiceDialog extends JDialog {
 
 	/**
 	 * Create the dialog.
+	 * @param OrderScreen instance from which the table choice window is being opened
 	 */
 	public TableChoiceDialog(OrderScreen parent) {
 		super(parent, "Choose a table", true);

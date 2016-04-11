@@ -21,7 +21,12 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-
+/**
+ * Window which displays a range of food which can be added to an order.
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class AddCourseToDinerScreen extends JDialog {
 
 	private static final long serialVersionUID = -7029260598028241556L;
@@ -86,7 +91,11 @@ public class AddCourseToDinerScreen extends JDialog {
 		this.pack();
 
 	}
-
+	
+	/**
+	 * Generate GUI for menu pane
+	 * @return JPanel menu pane
+	 */
 	private JPanel getMenuPane() {
 		List<Course> coursesList = this.getFilteredCoursesList();
 		
@@ -197,11 +206,19 @@ public class AddCourseToDinerScreen extends JDialog {
 		return this.menuPane;
 	}
 
+	/**
+	 * Filters course list according to the criteria specified by user
+	 * @return List<Course>
+	 */
 	private List<Course> getFilteredCoursesList() {
 		return this.menu.filterCoursesList(this.nutFreeCheckBox.isSelected(), this.veganCheckBox.isSelected(),
 				this.vegetarianCheckBox.isSelected(), this.glutenFreeCheckBox.isSelected());
 	}
-
+	
+	/**
+	 * Return GUI for checkboxes used to filter menu
+	 * @return
+	 */
 	private JPanel getFilterPane() {
 		this.filterPane = new JPanel();
 
@@ -233,12 +250,18 @@ public class AddCourseToDinerScreen extends JDialog {
 		return this.filterPane;
 	}
 
+	/**
+	 * Refresh filter pane
+	 */
 	public void refreshFilterPane() {
 		this.filterPane.removeAll();
 		this.filterPane.revalidate();
 		this.getFilterPane();
 	}
 	
+	/**
+	 * Reflect changes in the course list in the GUI
+	 */
 	public void refreshMenuPane() {
 		this.menuPane.removeAll();
 		this.menuPane.revalidate();

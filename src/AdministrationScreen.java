@@ -8,6 +8,12 @@ import javax.swing.JPanel;
 
 import exceptions.InvalidAdministrationPasswordException;
 
+/**
+ * Screen used to administer content of the menu.
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class AdministrationScreen extends JFrame {
 
 	private static final long serialVersionUID = -3373853423168231406L;

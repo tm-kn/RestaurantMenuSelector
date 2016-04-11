@@ -4,7 +4,7 @@ import java.util.List;
 /**
  * Class represents a diner and it's assigned to an order.
  * 
- * @author Tomasz Knapik <u1562595@unimail.hud.ac.uk>
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
  *
  */
 public class Diner {
@@ -80,7 +80,7 @@ public class Diner {
 	}
 
 	/**
-	 * Deltes course from the list.
+	 * Delete course from the list.
 	 * 
 	 * @param index
 	 * @return Course's instance that has been deleted

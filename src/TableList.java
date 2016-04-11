@@ -4,19 +4,30 @@ import java.util.List;
 /**
  * Singleton class containing list of tables.
  * 
- * @author Tomasz Knapik <u1562595@unimail.hud.ac.uk>
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
  *
  */
 public class TableList {
-
-	private static TableList instance = null;
-	private List<Table> tables = new ArrayList<Table>();
-
+	final static int DEFAULT_NUMBER_OF_TABLES = 10;
+	private static TableList instance;
+	private List<Table> tables;
+	
 	/**
-	 * Constructs table list. It generates list of tables.
+	 * Constructs table list with default number of tables.
 	 */
 	public TableList() {
-		for (int i = 1; i <= 10; i++) {
+		this(TableList.DEFAULT_NUMBER_OF_TABLES);
+	}
+	
+	/**
+	 * Constructs table list. It generates list of tables.
+	 * @param numberOfTables	number of tables to be generated
+	 */
+	public TableList(int numberOfTables) {
+		this.tables = new ArrayList<Table>();
+		
+		// Generate tables
+		for (int i = 1; i <= numberOfTables; i++) {
 			this.addTable(i);
 		}
 	}

@@ -20,6 +20,13 @@ import javax.swing.SwingUtilities;
 
 import exceptions.EmptyMenuException;
 
+/**
+ * Window responsible for creating a new order. It displays information about order and
+ * allows to open payment window or add a new course to the order.
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class OrderScreen extends JFrame {
 
 	private static final long serialVersionUID = 1744313213682203695L;
@@ -33,7 +40,8 @@ public class OrderScreen extends JFrame {
 	private JLabel orderHeadingLabel, tableNumberLabel, tableChoiceWarning, dinersHeadingLabel, totalPriceLabel;
 
 	/**
-	 * Create the dialog.
+	 * Create the order screen.
+	 * @param menu		Menu instance you want to use with this order
 	 */
 	public OrderScreen(Menu menu) {
 		super("Restaurant Menu Selector - Order Screen");
@@ -165,9 +173,11 @@ public class OrderScreen extends JFrame {
 		this.setLocationRelativeTo(null);
 		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.pack();
-		// this.setExtendedState(this.getExtendedState() | JFrame.MAXIMIZED_BOTH);
 	}
 
+	/**
+	 * Get data from the order instance and fill the GUI with it
+	 */
 	private void insertDataToWindowFromOrderObject() {
 		String tableNumber = "Not chosen";
 
@@ -211,6 +221,12 @@ public class OrderScreen extends JFrame {
 
 	}
 
+	/**
+	 * Generate GUI row displaying information about diner
+	 * @param diner			Diner instance
+	 * @param dinerNumber	Diner number in the order
+	 * @return
+	 */
 	private JPanel generateDinerRow(Diner diner, int dinerNumber) {
 		// Create a panel for the row
 		JPanel dinerRow = new JPanel();
@@ -302,6 +318,12 @@ public class OrderScreen extends JFrame {
 		return dinerRow;
 	}
 
+	/**
+	 * Generate GUI for a course row
+	 * @param course	course which you want to be displayed
+	 * @param diner		under which diner the course should be displayed
+	 * @return
+	 */
 	private JPanel generateDinerCourseRow(Course course, Diner diner) {
 		JPanel courseRow = new JPanel();
 		courseRow.setLayout(new BoxLayout(courseRow, BoxLayout.Y_AXIS));
@@ -351,7 +373,7 @@ public class OrderScreen extends JFrame {
 	}
 
 	/**
-	 * Gets an Order instance for the current screen.
+	 * Get an Order instance for the current screen.
 	 * 
 	 * @return Order instance
 	 */
@@ -360,12 +382,16 @@ public class OrderScreen extends JFrame {
 	}
 
 	/**
-	 * Refreshes data in the window after they have been altered.
+	 * Refresh data in the window after they have been altered.
 	 */
 	public void refreshData() {
 		this.insertDataToWindowFromOrderObject();
 	}
 
+	/**
+	 * Get menu instance used with this order
+	 * @return Menu instance
+	 */
 	public Menu getMenu() {
 		return menu;
 	}

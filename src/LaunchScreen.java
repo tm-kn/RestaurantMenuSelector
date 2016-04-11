@@ -11,6 +11,12 @@ import javax.swing.SwingUtilities;
 
 import exceptions.InvalidAdministrationPasswordException;
 
+/**
+ * Window showing a choice of different options available after the program is launched.
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class LaunchScreen extends JFrame {
 
 	private static final long serialVersionUID = 8600468294910125335L;
@@ -21,6 +27,7 @@ public class LaunchScreen extends JFrame {
 
 	/**
 	 * Create the frame.
+	 * @param menu Menu instance used with this program instance
 	 */
 	public LaunchScreen(Menu menu) {
 		super("Restaurant Menu Selector - Launch Screen");

@@ -8,7 +8,7 @@ import exceptions.EmptyMenuException;
 /**
  * Menu contains courses, manages them and allows filtering and sorting them.
  * 
- * @author Tomasz Knapik <u1562595@unimail.hud.ac.uk>
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
  *
  */
 public class Menu {

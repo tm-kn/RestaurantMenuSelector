@@ -4,9 +4,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -16,19 +13,35 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
+import exceptions.InvalidAmountPaidException;
+import exceptions.InvalidNumberOfCoursesOrderedException;
+import exceptions.InvalidNumberOfDinersException;
+import exceptions.InvalidOrderStatusException;
+import exceptions.TableHasNotBeenChosenException;
+
+/**
+ * Window which is used to simulate payment for order.
+ * 
+ * @author TJ Knapik<u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class PaymentDialog extends JDialog {
 
 	private static final long serialVersionUID = 5522846541550447289L;
-	private Double totalAmount, changeAmount, amountPaid;
 	private Container cp;
 	private OrderScreen parent;
 	private Order order;
 	private ButtonGroup paymentMethodRadioGroup;
-	private JRadioButton cardPaymentRadioButton, cashPaymentRadioButton;
+	private JRadioButton cashPaymentRadioButton;
 	private JPanel paymentMethodPane, centrePane, paymentFormPane;
 	private JLabel errorMessageLabel;
 	
+	/**
+	 * Construct a payment window
+	 * @param parent	OrderScreen instance
+	 */
 	public PaymentDialog(OrderScreen parent) {
 		// Make the dialog modal
 		super(parent, true);
@@ -40,9 +53,6 @@ public class PaymentDialog extends JDialog {
 		// Set the attributes
 		this.parent = parent;
 		this.order = parent.getOrder();
-		this.totalAmount = this.order.getTotalPrice();
-		this.changeAmount = 0.0;
-		this.amountPaid = 0.0;
 		
 		// Centre pane
 		this.centrePane = new JPanel();
@@ -54,16 +64,6 @@ public class PaymentDialog extends JDialog {
 		
 		this.paymentMethodRadioGroup = new ButtonGroup();
 		
-		this.cardPaymentRadioButton = new JRadioButton("Card");
-		this.cardPaymentRadioButton.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				PaymentDialog.this.refreshPaymentFormPane();
-			}
-			
-		});
-		
 		this.cashPaymentRadioButton = new JRadioButton("Cash");
 		this.cashPaymentRadioButton.addActionListener(new ActionListener() {
 
@@ -74,11 +74,10 @@ public class PaymentDialog extends JDialog {
 			
 		});
 		
-		this.paymentMethodRadioGroup.add(this.cardPaymentRadioButton);
 		this.paymentMethodRadioGroup.add(this.cashPaymentRadioButton);
 		
+		this.paymentMethodPane.add(new JLabel("Choose a payment method: "));
 		this.paymentMethodPane.add(this.cashPaymentRadioButton);
-		this.paymentMethodPane.add(this.cardPaymentRadioButton);
 		
 		// Set up error message label
 		this.errorMessageLabel = new JLabel();
@@ -104,59 +103,64 @@ public class PaymentDialog extends JDialog {
 		this.setSize(500, 200);
 	}
 	
+	/**
+	 * Refresh elements on payment form GUI
+	 */
 	private void refreshPaymentFormPane() {
 		this.paymentFormPane.removeAll();
 		
 		if(this.cashPaymentRadioButton.isSelected()) {
 			this.paymentFormPane.add(this.getCashPaymentForm());
-			
-		} else if(this.cardPaymentRadioButton.isSelected()) {
-			this.paymentFormPane.add(this.getCardPaymentForm());
-		} else {
-			this.paymentFormPane.removeAll();
-			this.paymentFormPane.revalidate();
 		}
 		
 		this.paymentFormPane.revalidate();
 		this.paymentFormPane.repaint();
 	}
 	
+	/**
+	 * Get a GUI form for cash payments
+	 * @return
+	 */
 	private JPanel getCashPaymentForm() {
 		JPanel form = new JPanel();
 		form.setLayout(new BoxLayout(form, BoxLayout.X_AXIS));
 		
+		// Text field where user types how much they have paid in cash
 		JTextField inputAmount = new JTextField();
-		inputAmount.setSize(new Dimension(20, 10));
+		inputAmount.setSize(new Dimension(inputAmount.getWidth(), inputAmount.getHeight()));
 		
+		// Pay button
 		JButton payButton = new JButton("Pay");
 		payButton.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				double amountPaid = 0.0;
+				
+				// Get an amount inserted by customer from the text box
 				try {
-					PaymentDialog.this.amountPaid = Double.valueOf(inputAmount.getText());
+					 amountPaid = Double.valueOf(inputAmount.getText());
 				} catch(NumberFormatException e1) {
 					PaymentDialog.this.addPaymentError("Make sure the amount is in correct format.");
 					return;
 				}
-							
-				if(PaymentDialog.this.amountPaid < PaymentDialog.this.totalAmount) {
-					PaymentDialog.this.addPaymentError("You gave less than you have to pay. Please pay at least £" + PaymentDialog.this.totalAmount + ".");
-					return;
+				
+				// Try to pay for the order and close the current order window
+				try {
+						PaymentDialog.this.order.pay(amountPaid);
+						PaymentDialog.this.openNewOrderWindow();
+				} catch (TableHasNotBeenChosenException | InvalidNumberOfDinersException | InvalidNumberOfCoursesOrderedException | InvalidOrderStatusException e1) {
+					// It's unacceptable state of the program, so let's throw runtime exception which should crash the program
+					e1.printStackTrace();
+					throw new RuntimeException(
+								"Things went totaly south - payment dialog has been allowed before one of \n" +
+								"following has been checked - table has not been chosen, invalid number of \n" +
+								"diners or invalid number of courses or order status is invalid.");
+				} catch (InvalidAmountPaidException e1) {
+					PaymentDialog.this.addPaymentError("You have not paid enough cash.");
 				}
-				
-				
-				PaymentDialog.this.changeAmount = PaymentDialog.this.amountPaid - PaymentDialog.this.totalAmount;
-				
-				if(PaymentDialog.this.changeAmount < 0.01) {
-					PaymentDialog.this.changeAmount = 0.0;
-				}
-				
-				PaymentDialog.this.printReceipt();
-				PaymentDialog.this.openNewOrderWindow();
-				
 			}
-			
 		});
 		
 		form.add(inputAmount);
@@ -165,59 +169,30 @@ public class PaymentDialog extends JDialog {
 		return form;
 	}
 	
-	private JPanel getCardPaymentForm() {
-		JPanel form = new JPanel();
-		form.setLayout(new BorderLayout());
-		
-		return form;
-	}
-	
+	/**
+	 * Add a payment error to the screen
+	 * @param error
+	 */
 	private void addPaymentError(String error) {
 		this.errorMessageLabel.setText(error);
 	}
 	
+	/**
+	 * Open a brand-new order window ready for a new order
+	 */
 	private void openNewOrderWindow() {
-		this.parent.dispose();
-		
-		try {
-			OrderScreen frame = new OrderScreen(this.parent.getMenu());
-			frame.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+		SwingUtilities.invokeLater(new Runnable() {
 
-	private void printReceipt() {
-		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		Date date = new Date();
-		
-		System.out.println("RECEIPT");
-		System.out.println(dateFormat.format(date));
-		System.out.println("Order #" + this.order.getNumber());
-		System.out.println("Table number: " + this.order.getTable().getNumber());
-		System.out.println("--------------------");
-		
-		int i = 1;
-		for(Diner diner : this.order.getDiners()) {
-			System.out.println("-- DINER " + i + " --");
-			
-			for(Course course : diner.getCourses()) {
-				System.out.println(course.getName() + " - " + course.getKiloCalories() + "kcal - £" + "" + course.getPrice());
+			@Override
+			public void run() {
+				// Dispose order window
+				PaymentDialog.this.parent.dispose();
+				
+				// Create a new order screen ready for a new order
+				OrderScreen frame = new OrderScreen(PaymentDialog.this.parent.getMenu());
+				frame.setVisible(true);
 			}
 			
-			System.out.println();
-			System.out.println("Total cost for diner " + i + ": £" + OrderScreen.DECIMAL_FORMAT.format(diner.getTotalPrice()));
-			System.out.println("Total kilocalories for diner " + i + ": " + diner.getTotalKiloCalories() + "kcal");
-			System.out.println();
-			
-			i++;
-		}
-		
-		System.out.println("--------------------");
-		System.out.println("Total: £" + OrderScreen.DECIMAL_FORMAT.format(this.totalAmount));
-		System.out.println("Paid: £" + OrderScreen.DECIMAL_FORMAT.format(this.amountPaid));
-		System.out.println("Change: £" + OrderScreen.DECIMAL_FORMAT.format(this.changeAmount));
-		System.out.println("--------------------");
-		System.out.println("Thank you for your custom");
+		});
 	}
 }

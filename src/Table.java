@@ -4,7 +4,7 @@ import java.util.List;
 /**
  * Table in a restaurant.
  * 
- * @author Tomasz Knapik <u1562595@unimail.hud.ac.uk>
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
  *
  */
 public class Table {

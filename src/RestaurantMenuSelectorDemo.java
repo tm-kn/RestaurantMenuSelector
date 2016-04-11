@@ -1,9 +1,23 @@
+/**
+ * This is a class used to start the program and contains menu filled with example courses.
+ * It's used for demo purposes to demonstrate how the program works.
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class RestaurantMenuSelectorDemo extends RestaurantMenuSelector {
 	
+	/**
+	 * Run the program
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new RestaurantMenuSelectorDemo();
 	}
 	
+	/**
+	 * Create instance of the program with menu filled with example data.
+	 */
 	public RestaurantMenuSelectorDemo() {
 		super();
 		this.addStarters();
@@ -12,7 +26,10 @@ public class RestaurantMenuSelectorDemo extends RestaurantMenuSelector {
 		this.addDrinks();
 		this.addDeserts();
 	}
-
+	
+	/**
+	 * Add starters to the menu.
+	 */
 	private void addStarters() {
 		this.menu.addCourse(Course.STARTER, "Gamberi", 5.99, 350000,
 				"Succulent king prawns baked in garlic & chilli butter, with ciabatta", true, false, true, true);
@@ -30,6 +47,9 @@ public class RestaurantMenuSelectorDemo extends RestaurantMenuSelector {
 				true, true, true, false);
 	}
 	
+	/**
+	 * Add main courses to the menu.
+	 */
 	private void addMains() {
 		this.menu.addCourse(Course.MAIN, "Margherita Pizza", 9.25, 650000, "Tomato, mozzarella and fresh basil",
 				false, true, true, true);
@@ -54,6 +74,9 @@ public class RestaurantMenuSelectorDemo extends RestaurantMenuSelector {
 				"Fresh egg tagliatelle with pomodoro sauce, fresh basil and basil oil", true, false, true, true);
 	}
 	
+	/**
+	 * Add fish courses to the menu.
+	 */
 	private void addFishCourses() {
 		this.menu.addCourse(Course.FISH, "Cozze Alla Francese", 12.20, 900000,
 				"A pot of mussles served with chips. With extra virgin olive oil, garlic, white wine, tomatoes and parsley.",
@@ -64,6 +87,9 @@ public class RestaurantMenuSelectorDemo extends RestaurantMenuSelector {
 				true, false, true, false);
 	}
 	
+	/**
+	 * Add desserts to the menu.
+	 */
 	private void addDeserts() {
 		this.menu.addCourse(Course.DESSERT, "Gelato", 5.00, 700000, "3-scoop", false, false, true, false);
 
@@ -78,6 +104,9 @@ public class RestaurantMenuSelectorDemo extends RestaurantMenuSelector {
 				"Creamy vanilla pannacotta served with morello cherry sauce", false, false, true, false);
 	}
 	
+	/**
+	 * Add drinks to the menu
+	 */
 	private void addDrinks() {
 		this.menu.addCourse(Course.DRINK, "Coca-cola 33cl", 3.00, 300000, "A can", false, true, true, false);
 		this.menu.addCourse(Course.DRINK, "Juice 25cl", 3.00, 300000, "A glass", true, true, true, false);
