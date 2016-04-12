@@ -20,6 +20,7 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import exceptions.EmptyMenuException;
+import exceptions.InvalidNumberOfDinersException;
 import models.Course;
 import models.Diner;
 import models.Menu;
@@ -290,7 +291,11 @@ public class OrderScreen extends JFrame {
 							"Confirm", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 					if (response == JOptionPane.YES_OPTION) {
-						OrderScreen.this.order.deleteDiner(diner);
+						try {
+							OrderScreen.this.order.deleteDiner(diner);
+						} catch (InvalidNumberOfDinersException e1) {
+							System.err.println("Diner cannot be deleted because there's only one.");
+						}
 						OrderScreen.this.refreshData();
 					}
 				}
