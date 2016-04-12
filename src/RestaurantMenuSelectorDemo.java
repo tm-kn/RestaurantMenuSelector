@@ -55,7 +55,7 @@ public class RestaurantMenuSelectorDemo extends RestaurantMenuSelector {
 				false, true, true, true);
 
 		this.menu.addCourse(Course.MAIN, "Pepperoni Pizza", 12.30, 800000,
-				"Spicy Italian pVanilla cheesecake with mascarpone topped with chocolate tagliatelle and served with a pot of fresh creamepperoni and hot green chillies",
+				"Spicy Italian pizza with pepperoni and hot green chillies",
 				false, false, false, true);
 
 		this.menu.addCourse(Course.MAIN, "Lamb Shank", 18.99, 1200000,
