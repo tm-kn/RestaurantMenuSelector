@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Dimension;
@@ -20,6 +21,7 @@ import exceptions.InvalidNumberOfCoursesOrderedException;
 import exceptions.InvalidNumberOfDinersException;
 import exceptions.InvalidOrderStatusException;
 import exceptions.TableHasNotBeenChosenException;
+import models.Order;
 
 /**
  * Window which is used to simulate payment for order.

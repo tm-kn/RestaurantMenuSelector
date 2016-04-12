@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
@@ -19,6 +20,10 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
 import exceptions.EmptyMenuException;
+import models.Course;
+import models.Diner;
+import models.Menu;
+import models.Order;
 
 /**
  * Window responsible for creating a new order. It displays information about order and
@@ -30,7 +35,7 @@ import exceptions.EmptyMenuException;
 public class OrderScreen extends JFrame {
 
 	private static final long serialVersionUID = 1744313213682203695L;
-	static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
+	public static final DecimalFormat DECIMAL_FORMAT = new DecimalFormat("#.##");
 	private Order order = new Order();
 	private Menu menu;
 	private Container cp;

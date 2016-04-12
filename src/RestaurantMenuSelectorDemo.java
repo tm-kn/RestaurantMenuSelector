@@ -1,3 +1,5 @@
+import models.Course;
+
 /**
  * This is a class used to start the program and contains menu filled with example courses.
  * It's used for demo purposes to demonstrate how the program works.

@@ -1,5 +1,8 @@
 import javax.swing.SwingUtilities;
 
+import gui.LaunchScreen;
+import models.Menu;
+
 /**
  * Class that is used to run a program.
  * It's not a demo version, so it doesn't have any data populated.

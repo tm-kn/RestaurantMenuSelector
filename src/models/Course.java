@@ -1,3 +1,4 @@
+package models;
 import java.util.Arrays;
 
 import exceptions.InvalidCourseTypeException;
@@ -10,13 +11,13 @@ import exceptions.InvalidCourseTypeException;
  *
  */
 public class Course {
-	final static String MAIN = "Main";
-	final static String DESSERT = "Dessert";
-	final static String DRINK = "Drink";
-	final static String FISH = "Fish";
-	final static String STARTER = "Starter";
-	final static String OTHER = "Other";
-	final static String[] COURSE_TYPES = {MAIN, DESSERT, DRINK, FISH, STARTER, OTHER};
+	public final static String MAIN = "Main";
+	public final static String DESSERT = "Dessert";
+	public final static String DRINK = "Drink";
+	public final static String FISH = "Fish";
+	public final static String STARTER = "Starter";
+	public final static String OTHER = "Other";
+	public final static String[] COURSE_TYPES = {MAIN, DESSERT, DRINK, FISH, STARTER, OTHER};
 	
 	private String courseType;
 	private String name;

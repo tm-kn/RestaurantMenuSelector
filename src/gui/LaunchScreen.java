@@ -1,3 +1,4 @@
+package gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -10,6 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 
 import exceptions.InvalidAdministrationPasswordException;
+import models.Menu;
 
 /**
  * Window showing a choice of different options available after the program is launched.

@@ -1,6 +1,6 @@
+package gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -10,7 +10,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JComponent;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -24,6 +23,8 @@ import javax.swing.event.ListSelectionListener;
 
 import exceptions.InvalidAdministrationPasswordException;
 import exceptions.InvalidCourseTypeException;
+import models.Course;
+import models.Menu;
 
 import java.awt.Component;
 

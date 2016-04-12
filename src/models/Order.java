@@ -1,3 +1,4 @@
+package models;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import exceptions.InvalidNumberOfCoursesOrderedException;
 import exceptions.InvalidNumberOfDinersException;
 import exceptions.InvalidOrderStatusException;
 import exceptions.TableHasNotBeenChosenException;
+import gui.OrderScreen;
 
 /**
  * Order in a restaurant. Orders are assigned to tables.
@@ -77,8 +79,12 @@ public class Order {
 	 * 
 	 * @param diner
 	 *            you want to delete
+	 * @throws InvalidNumberOfDinersException 
 	 */
-	public void deleteDiner(Diner diner) {
+	public void deleteDiner(Diner diner) throws InvalidNumberOfDinersException {
+		if(this.diners.size() < 2) {
+			throw new InvalidNumberOfDinersException();
+		}
 		this.diners.remove(diner);
 	}
 
