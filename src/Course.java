@@ -243,5 +243,7 @@ public class Course {
 		this.courseType = courseType;
 	}
 	
-	
+	public String toString() {
+		return this.name;
+	}
 }

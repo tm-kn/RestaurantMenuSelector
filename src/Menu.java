@@ -34,6 +34,14 @@ public class Menu {
 		
 		return courses;
 	}
+	
+	/**
+	 * It sets a new courses list to the menu.
+	 * @param coursesList	List with Course objects.
+	 */
+	public void setCoursesList(List<Course> coursesList) {
+		this.courses = coursesList;
+	}
 
 	/**
 	 * Adds a course to menu
