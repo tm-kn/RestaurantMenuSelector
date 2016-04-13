@@ -21,7 +21,7 @@ public class AdministrationScreenTestCase {
 	}
 	
 	@Test
-	public void testInputingCorrectPassword() {
+	public void testInputCorrectPassword() {
 		try {
 			new AdministrationScreen(this.menu, AdministrationScreen.PASSWORD);
 		} catch (InvalidAdministrationPasswordException e) {
@@ -30,7 +30,7 @@ public class AdministrationScreenTestCase {
 	}
 	
 	@Test(expected=InvalidAdministrationPasswordException.class)
-	public void testInputingInvalidPasssword() throws InvalidAdministrationPasswordException {
+	public void testInputInvalidPasssword() throws InvalidAdministrationPasswordException {
 		new AdministrationScreen(this.menu, "the last password on the earth someone would use");
 	}
 

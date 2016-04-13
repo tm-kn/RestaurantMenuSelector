@@ -99,7 +99,7 @@ public class OrderExceptionsTestCase {
 	 * @throws InvalidOrderStatusException
 	 */
 	@Test(expected=InvalidAmountPaidException.class)
-	public void testPayingLessThanAmountDue() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidAmountPaidException, InvalidOrderStatusException {
+	public void testPayLessThanAmountDue() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidAmountPaidException, InvalidOrderStatusException {
 		this.order.setTable(new Table(1));
 		this.order.getDiners().get(0).addCourse(this.menu.getCourses().get(0));
 		this.order.pay(this.order.getTotalPrice() - 0.01);
@@ -114,7 +114,7 @@ public class OrderExceptionsTestCase {
 	 * @throws InvalidOrderStatusException
 	 */
 	@Test
-	public void testPayingResultingInNoChange() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidOrderStatusException {
+	public void testPayResultingInNoChange() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidOrderStatusException {
 		this.order.setTable(new Table(1));
 		this.order.getDiners().get(0).addCourse(this.menu.getCourses().get(0));
 		
@@ -135,7 +135,7 @@ public class OrderExceptionsTestCase {
 	 * @throws InvalidOrderStatusException
 	 */
 	@Test
-	public void testPayingWithMoreThanDueAmount() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidOrderStatusException {
+	public void testPayWithMoreThanDueAmount() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidOrderStatusException {
 		this.order.setTable(new Table(1));
 		this.order.getDiners().get(0).addCourse(this.menu.getCourses().get(0));
 		
@@ -151,7 +151,7 @@ public class OrderExceptionsTestCase {
 	 * @throws InvalidOrderStatusException 
 	 */
 	@Test(expected=InvalidOrderStatusException.class)
-	public void testSettingNotValidOrderStatus() throws InvalidOrderStatusException {
+	public void testSetNotValidOrderStatus() throws InvalidOrderStatusException {
 		Random randomGenerator = new Random();
 		int randomInt = randomGenerator.nextInt();
 		

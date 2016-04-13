@@ -82,7 +82,7 @@ public class OrderTestCase {
 	 * Test if getting total price for order works properly.
 	 */
 	@Test
-	public void testGettingTotalPrice() {
+	public void testGetTotalPrice() {
 		Diner diner = this.order.getDiners().get(0);
 		diner.addCourse(this.menu.getCourses().get(0));
 		diner.addCourse(this.menu.getCourses().get(0));
@@ -95,7 +95,7 @@ public class OrderTestCase {
 	 * Test if getting total price for order with two different diners work properly.
 	 */
 	@Test
-	public void testGettingTotalPriceForOrderWithTwoDiners() {
+	public void testGetTotalPriceForOrderWithTwoDiners() {
 		this.order.addDiner(new Diner());
 		
 		Diner diner = this.order.getDiners().get(0);
@@ -114,7 +114,7 @@ public class OrderTestCase {
 	 * Test counting calories.
 	 */
 	@Test
-	public void testGettingTotalCalories() {
+	public void testGetTotalCalories() {
 		this.order.addDiner(new Diner());
 		
 		Diner diner = this.order.getDiners().get(0);
@@ -133,7 +133,7 @@ public class OrderTestCase {
 	 * Test getting total kilocalories.
 	 */
 	@Test
-	public void testGettingTotalKiloCalories() {
+	public void testGetTotalKiloCalories() {
 		this.order.addDiner(new Diner());
 		
 		Diner diner = this.order.getDiners().get(0);
