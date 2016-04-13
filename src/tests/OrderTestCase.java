@@ -10,6 +10,12 @@ import models.Diner;
 import models.Menu;
 import models.Order;
 
+/**
+ * Unit test testing Order class.
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class OrderTestCase {
 	
 	private Order order;
