@@ -5,10 +5,16 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import exceptions.InvalidAmountPaidException;
+import exceptions.InvalidNumberOfCoursesOrderedException;
+import exceptions.InvalidNumberOfDinersException;
+import exceptions.InvalidOrderStatusException;
+import exceptions.TableHasNotBeenChosenException;
 import models.Course;
 import models.Diner;
 import models.Menu;
 import models.Order;
+import models.Table;
 
 /**
  * Unit test testing Order class.
@@ -141,6 +147,24 @@ public class OrderTestCase {
 		
 		// 186601/1000 = 186
 		assertEquals(186, this.order.getTotalKiloCalories());
+	}
+	
+	/**
+	 * Test getting change.
+	 * @throws InvalidOrderStatusException 
+	 * @throws InvalidAmountPaidException 
+	 * @throws InvalidNumberOfCoursesOrderedException 
+	 * @throws InvalidNumberOfDinersException 
+	 * @throws TableHasNotBeenChosenException 
+	 */
+	@Test
+	public void testGetChange() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidAmountPaidException, InvalidOrderStatusException {
+		this.order.setTable(new Table(5));
+		Diner diner = this.order.getDiners().get(0);
+		diner.addCourse(this.menu.getCourses().get(0));
+		diner.addCourse(this.menu.getCourses().get(1));
+		this.order.pay(10.05);
+		assertEquals(3.55, this.order.getChangeAmount(), 0.01);
 	}
 
 }

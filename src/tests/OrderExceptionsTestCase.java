@@ -99,7 +99,7 @@ public class OrderExceptionsTestCase {
 	 * @throws InvalidOrderStatusException
 	 */
 	@Test(expected=InvalidAmountPaidException.class)
-	public void testInvalidAmountPaidException() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidAmountPaidException, InvalidOrderStatusException {
+	public void testPayingLessThanAmountDue() throws TableHasNotBeenChosenException, InvalidNumberOfDinersException, InvalidNumberOfCoursesOrderedException, InvalidAmountPaidException, InvalidOrderStatusException {
 		this.order.setTable(new Table(1));
 		this.order.getDiners().get(0).addCourse(this.menu.getCourses().get(0));
 		this.order.pay(this.order.getTotalPrice() - 0.01);

@@ -37,7 +37,7 @@ import java.awt.Component;
 public class AdministrationScreen extends JFrame {
 
 	private static final long serialVersionUID = -3373853423168231406L;
-	final static String PASSWORD = "admin123";
+	public final static String PASSWORD = "admin123";
 	private DefaultListModel<Course> coursesListModel;
 	private JButton closeButton, deleteSelectedCoursesButton, saveCourseButton;
 	private JLabel screenHeading;
@@ -54,8 +54,9 @@ public class AdministrationScreen extends JFrame {
 	 * Constructor for AdministrationScreen.
 	 * @param menu		Menu instance to be edited
 	 * @param password	Password inputed to access AdministrationScreen
+	 * @throws InvalidAdministrationPasswordException 
 	 */
-	public AdministrationScreen(Menu menu, String inputtedPassword) {
+	public AdministrationScreen(Menu menu, String inputtedPassword) throws InvalidAdministrationPasswordException {
 		super("Administation screen");
 		this.checkCredentials(inputtedPassword);
 		this.menu = menu;
@@ -220,18 +221,26 @@ public class AdministrationScreen extends JFrame {
 				}
 				
 				// Set attributes of selected course to the ones provided by user
-				selectedCourse.setName(AdministrationScreen.this.courseNameTextField.getText());
+				try {
+					selectedCourse.setName(AdministrationScreen.this.courseNameTextField.getText());
+				} catch(IllegalArgumentException e1) {
+					JOptionPane.showMessageDialog(AdministrationScreen.this, e1.getMessage());
+				}
 				
 				try {
 					selectedCourse.setCalories(Integer.valueOf(AdministrationScreen.this.courseCaloriesTextField.getText()));
 				} catch(NumberFormatException e1) {
 					JOptionPane.showMessageDialog(AdministrationScreen.this, "Calories amount is not in the right format.");
+				} catch(IllegalArgumentException e1) {
+					JOptionPane.showMessageDialog(AdministrationScreen.this, e1.getMessage());
 				}
 				
 				try {
 				selectedCourse.setPrice(Double.valueOf(AdministrationScreen.this.coursePriceTextField.getText()));
 				} catch(NumberFormatException e1) {
 					JOptionPane.showMessageDialog(AdministrationScreen.this, "Price is not in the right format.");
+				} catch(IllegalArgumentException e1) {
+					JOptionPane.showMessageDialog(AdministrationScreen.this, e1.getMessage());
 				}
 				
 				try {
@@ -240,7 +249,11 @@ public class AdministrationScreen extends JFrame {
 					JOptionPane.showMessageDialog(AdministrationScreen.this, "Chosen course type is not correct");
 				}
 				
-				selectedCourse.setDescription(AdministrationScreen.this.courseDescriptionTextArea.getText());
+				try {
+					selectedCourse.setDescription(AdministrationScreen.this.courseDescriptionTextArea.getText());
+				} catch(IllegalArgumentException e1) {
+					JOptionPane.showMessageDialog(AdministrationScreen.this, e1.getMessage());
+				}
 				
 				selectedCourse.setGlutenFree(AdministrationScreen.this.courseGlutenFreeCheckBox.isSelected());
 				selectedCourse.setNutFree(AdministrationScreen.this.courseNutFreeCheckBox.isSelected());
@@ -315,7 +328,7 @@ public class AdministrationScreen extends JFrame {
 		}
 	}
 
-	private void checkCredentials(String password) {
+	private void checkCredentials(String password) throws InvalidAdministrationPasswordException {
 		if(!password.equals(AdministrationScreen.PASSWORD)) {
 			throw new InvalidAdministrationPasswordException();
 		}
