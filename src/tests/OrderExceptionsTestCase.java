@@ -2,6 +2,9 @@ package tests;
 
 import static org.junit.Assert.fail;
 
+import java.util.Arrays;
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.Test;
 
@@ -141,5 +144,22 @@ public class OrderExceptionsTestCase {
 		} catch (InvalidAmountPaidException e) {
 			fail("Paid more than the amount is due and InvalidAmountPaidException has been thrown.");
 		}
+	}
+	
+	/**
+	 * Test setting not valid order status.
+	 * @throws InvalidOrderStatusException 
+	 */
+	@Test(expected=InvalidOrderStatusException.class)
+	public void testSettingNotValidOrderStatus() throws InvalidOrderStatusException {
+		Random randomGenerator = new Random();
+		int randomInt = randomGenerator.nextInt();
+		
+		while(Arrays.asList(Order.ALLOWED_STATUSES).contains(randomInt)) {
+			randomInt = randomGenerator.nextInt();
+		}
+		
+		this.order.setStatus(randomInt);
+		
 	}
 }

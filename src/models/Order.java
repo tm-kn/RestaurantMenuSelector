@@ -2,6 +2,7 @@ package models;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -20,10 +21,11 @@ import gui.OrderScreen;
  */
 public class Order {
 	
-	final static int ORDERING = 1;
-	final static int ORDERED = 2;
-	final static int IN_PREPARATION = 3;
-	final static int SERVED = 4;
+	public final static int ORDERING = 1;
+	public final static int ORDERED = 2;
+	public final static int IN_PREPARATION = 3;
+	public final static int SERVED = 4;
+	public final static Integer[] ALLOWED_STATUSES = new Integer[] {ORDERING, ORDERED, IN_PREPARATION, SERVED};
 	
 	private int number, status;
 	private List<Diner> diners;
@@ -178,8 +180,13 @@ public class Order {
 	/**
 	 * Sets the status of the order
 	 * @param status	use constants on Order class
+	 * @throws InvalidOrderStatusException 
 	 */
-	public void setStatus(int status) {
+	public void setStatus(int status) throws InvalidOrderStatusException {
+		if (!Arrays.asList(Order.ALLOWED_STATUSES).contains(status)) {
+			throw new InvalidOrderStatusException();
+		}
+		
 		this.status = status;
 	}
 	
