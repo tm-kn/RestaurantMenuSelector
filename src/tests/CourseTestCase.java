@@ -9,12 +9,18 @@ import org.junit.Test;
 import exceptions.InvalidCourseTypeException;
 import models.Course;
 
+/**
+ * Test class testing Course class methods.
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class CourseTestCase {
 
 	private Course course;
 	
 	/**
-	 * Set up a test course.
+	 * Set up a test course instance.
 	 */
 	@Before
 	public void setUp() {

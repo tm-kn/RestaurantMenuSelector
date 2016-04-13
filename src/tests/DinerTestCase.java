@@ -9,11 +9,20 @@ import models.Course;
 import models.Diner;
 import models.Menu;
 
+/**
+ * Test Diner class' methods
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class DinerTestCase {
 	
 	private Diner diner;
 	private Menu menu;
 	
+	/**
+	 * Set up a basic menu object with example courses and an empty diner object for testing.
+	 */
 	@Before
 	public void setUp() {
 		Course course1 = new Course(

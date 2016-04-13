@@ -10,10 +10,19 @@ import gui.AdministrationScreen;
 import models.Course;
 import models.Menu;
 
+/**
+ * Test case testing administration screen.
+ * 
+ * @author TJ Knapik <u1562595@unimail.hud.ac.uk>
+ *
+ */
 public class AdministrationScreenTestCase {
 	
 	private Menu menu;
 	
+	/**
+	 * Set up example menu class.
+	 */
 	@Before
 	public void setUp() {
 		this.menu = new Menu();
