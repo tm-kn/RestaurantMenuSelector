@@ -1,6 +1,7 @@
 package gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import exceptions.EmptyMenuException;
 import exceptions.InvalidAdministrationPasswordException;
 import exceptions.InvalidCourseTypeException;
 import models.Course;
@@ -39,7 +41,7 @@ public class AdministrationScreen extends JFrame {
 	private static final long serialVersionUID = -3373853423168231406L;
 	public final static String PASSWORD = "admin123";
 	private DefaultListModel<Course> coursesListModel;
-	private JButton closeButton, deleteSelectedCoursesButton, saveCourseButton;
+	private JButton closeButton, deleteSelectedCoursesButton, saveCourseButton, addNewCourseButton;
 	private JLabel screenHeading;
 	private JTextField courseNameTextField, coursePriceTextField, courseCaloriesTextField;
 	private JTextArea courseDescriptionTextArea;
@@ -156,6 +158,18 @@ public class AdministrationScreen extends JFrame {
 			
 		});
 		
+		this.addNewCourseButton = new JButton("Add a new course");
+		this.addNewCourseButton.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				Course newCourse = new Course(Course.MAIN, "New course name", 0.0, 0, null, false, false, false, false);
+				AdministrationScreen.this.coursesListModel.addElement(newCourse);
+				AdministrationScreen.this.coursesList.setSelectedValue(newCourse, true);
+			}
+			
+		});
+		
 		this.deleteSelectedCoursesButton = new JButton("Delete selected courses");
 		this.deleteSelectedCoursesButton.setEnabled(false);
 		this.deleteSelectedCoursesButton.addActionListener(new ActionListener() {
@@ -260,6 +274,15 @@ public class AdministrationScreen extends JFrame {
 				selectedCourse.setVegan(AdministrationScreen.this.courseVeganCheckBox.isSelected());
 				selectedCourse.setVegetarian(AdministrationScreen.this.courseVegetarianCheckBox.isSelected());
 				
+				// If it's a new course, it needs to be added to menu instance too
+				try {
+					if(!AdministrationScreen.this.menu.getCourses().contains(selectedCourse)) {
+						AdministrationScreen.this.menu.addCourse(selectedCourse);
+					}
+				} catch(EmptyMenuException e1) {
+					AdministrationScreen.this.menu.addCourse(selectedCourse);
+				}
+				
 				// Select it again in order to refresh values
 				AdministrationScreen.this.coursesList.clearSelection();
 				AdministrationScreen.this.coursesList.setSelectedValue(selectedCourse, true);
@@ -281,6 +304,7 @@ public class AdministrationScreen extends JFrame {
 		
 		this.centrePane.add(this.coursesList);
 		this.centrePane.add(this.deleteSelectedCoursesButton);
+		this.centrePane.add(this.addNewCourseButton);
 		this.centrePane.add(this.courseEditPane);
 		
 		
@@ -323,8 +347,12 @@ public class AdministrationScreen extends JFrame {
 	}
 	
 	private void loadDataIntoGUI() {
-		for(Course course : this.menu.getCourses()) {
-			this.coursesListModel.addElement(course);
+		try {
+			for(Course course : this.menu.getCourses()) {
+				this.coursesListModel.addElement(course);
+			}
+		} catch(EmptyMenuException e) {
+			// Ignore this exception as list can be empty
 		}
 	}
 
