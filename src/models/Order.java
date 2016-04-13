@@ -327,45 +327,43 @@ public class Order {
 		
 		// Update the date when the order has been paid for
 		this.paidAt = new Date();
-		
-		// Prints a receipt for the order
-		this.printReceipt();
 	}
 
 	/**
-	 * Print receipt for the order
+	 * Get string containing a receipt
 	 */
-	private void printReceipt() {
+	public String getReceipt() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		
-		System.out.println("RECEIPT");
-		System.out.println(dateFormat.format(this.getPaidAt()));
-		System.out.println("Order #" + this.getNumber());
-		System.out.println("Table number: " + this.getTable().getNumber());
-		System.out.println("--------------------");
+		String receiptContent = "\n";
+		receiptContent += "RECEIPT\n";
+		receiptContent += dateFormat.format(this.getPaidAt()) + "\n";
+		receiptContent += "Order #" + this.getNumber() + "\n";
+		receiptContent += "Table number: " + this.getTable().getNumber() + "\n";
+		receiptContent += "--------------------\n";
 		
 		int i = 1;
 		for(Diner diner : this.getDiners()) {
-			System.out.println("-- DINER " + i + " --");
+			receiptContent += "-- DINER " + i + " --\n";
 			
 			for(Course course : diner.getCourses()) {
-				System.out.println(course.getName() + " - " + course.getKiloCalories() + "kcal - £" + "" + course.getPrice());
+				receiptContent += course.getName() + " - " + course.getKiloCalories() + "kcal - £" + "" + course.getPrice() + "\n";
 			}
 			
-			System.out.println();
-			System.out.println("Total cost for diner " + i + ": £" + OrderScreen.DECIMAL_FORMAT.format(diner.getTotalPrice()));
-			System.out.println("Total kilocalories for diner " + i + ": " + diner.getTotalKiloCalories() + "kcal");
+			receiptContent += "\n";
+			receiptContent += "Total cost for diner " + i + ": £" + OrderScreen.DECIMAL_FORMAT.format(diner.getTotalPrice()) + "\n";
+			receiptContent += "Total kilocalories for diner " + i + ": " + diner.getTotalKiloCalories() + "kcal\n";
 			System.out.println();
 			
 			i++;
 		}
 		
-		System.out.println("--------------------");
-		System.out.println("Total: £" + OrderScreen.DECIMAL_FORMAT.format(this.getTotalPrice()));
-		System.out.println("Paid: £" + OrderScreen.DECIMAL_FORMAT.format(this.getAmountPaid()));
-		System.out.println("Change: £" + OrderScreen.DECIMAL_FORMAT.format(this.getChangeAmount()));
-		System.out.println("--------------------");
-		System.out.println("Thank you for your custom");
+		receiptContent += "--------------------\n";
+		receiptContent += "Total: £" + OrderScreen.DECIMAL_FORMAT.format(this.getTotalPrice()) + "\n";
+		receiptContent += "Paid: £" + OrderScreen.DECIMAL_FORMAT.format(this.getAmountPaid()) + "\n";
+		receiptContent += "Change: £" + OrderScreen.DECIMAL_FORMAT.format(this.getChangeAmount()) + "\n";
+		receiptContent += "--------------------\n";
+		receiptContent += "Thank you for your custom\n";
+		return receiptContent;
 	}
 
 	/**

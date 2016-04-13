@@ -1,10 +1,11 @@
 package gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.BoxLayout;
 import javax.swing.ButtonGroup;
@@ -101,8 +102,8 @@ public class PaymentDialog extends JDialog {
 		this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 		this.setTitle("Pay for your order");
 		
-		// Set size
-		this.setSize(500, 200);
+		this.pack();
+		this.setResizable(false);
 	}
 	
 	/**
@@ -117,6 +118,7 @@ public class PaymentDialog extends JDialog {
 		
 		this.paymentFormPane.revalidate();
 		this.paymentFormPane.repaint();
+		this.pack();
 	}
 	
 	/**
@@ -128,8 +130,8 @@ public class PaymentDialog extends JDialog {
 		form.setLayout(new BoxLayout(form, BoxLayout.X_AXIS));
 		
 		// Text field where user types how much they have paid in cash
-		JTextField inputAmount = new JTextField();
-		inputAmount.setSize(new Dimension(inputAmount.getWidth(), inputAmount.getHeight()));
+		JTextField inputAmountTextField = new JTextField();
+
 		
 		// Pay button
 		JButton payButton = new JButton("Pay");
@@ -140,9 +142,9 @@ public class PaymentDialog extends JDialog {
 				
 				double amountPaid = 0.0;
 				
-				// Get an amount inserted by customer from the text box
+				// Get an amount from the text field
 				try {
-					 amountPaid = Double.valueOf(inputAmount.getText());
+					 amountPaid = Double.valueOf(inputAmountTextField.getText());
 				} catch(NumberFormatException e1) {
 					PaymentDialog.this.addPaymentError("Make sure the amount is in correct format.");
 					return;
@@ -151,7 +153,6 @@ public class PaymentDialog extends JDialog {
 				// Try to pay for the order and close the current order window
 				try {
 						PaymentDialog.this.order.pay(amountPaid);
-						PaymentDialog.this.openNewOrderWindow();
 				} catch (TableHasNotBeenChosenException | InvalidNumberOfDinersException | InvalidNumberOfCoursesOrderedException | InvalidOrderStatusException e1) {
 					// It's unacceptable state of the program, so let's throw runtime exception which should crash the program
 					e1.printStackTrace();
@@ -161,11 +162,14 @@ public class PaymentDialog extends JDialog {
 								"diners or invalid number of courses or order status is invalid.");
 				} catch (InvalidAmountPaidException e1) {
 					PaymentDialog.this.addPaymentError("You have not paid enough cash.");
+					return;
 				}
+				
+				PaymentDialog.this.openReceiptDialog();
 			}
 		});
 		
-		form.add(inputAmount);
+		form.add(inputAmountTextField);
 		form.add(payButton);
 		
 		return form;
@@ -180,9 +184,37 @@ public class PaymentDialog extends JDialog {
 	}
 	
 	/**
+	 * Open a dialog showing a receipt.
+	 */
+	private void openReceiptDialog() {
+		SwingUtilities.invokeLater(new Runnable() {
+
+			@Override
+			public void run() {
+				ReceiptDialog receiptDialog = new ReceiptDialog(PaymentDialog.this, PaymentDialog.this.order.getReceipt());
+				receiptDialog.setLocationRelativeTo(PaymentDialog.this);
+				receiptDialog.setVisible(true);
+				
+				receiptDialog.addWindowListener(new WindowAdapter() {
+					/**
+					 * When receipt dialog is closed dispose it and open a new order window.
+					 */
+					@Override
+					public void windowClosed(WindowEvent e) {
+						receiptDialog.dispose();
+						PaymentDialog.this.openNewOrderWindow();
+					}
+				});
+			}
+			
+		});
+		
+	}
+	
+	/**
 	 * Open a brand-new order window ready for a new order
 	 */
-	private void openNewOrderWindow() {
+	public void openNewOrderWindow() {
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override

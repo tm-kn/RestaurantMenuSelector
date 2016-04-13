@@ -94,6 +94,7 @@ public class TableChoiceDialog extends JDialog {
 		}
 		
 		this.pack();
+		this.setResizable(false);
 	}
 
 }
