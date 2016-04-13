@@ -1,6 +1,7 @@
 package gui;
 import java.awt.BorderLayout;
 import java.awt.Container;
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
@@ -45,7 +46,8 @@ public class AdministrationScreen extends JFrame {
 	private JTextField courseNameTextField, coursePriceTextField, courseCaloriesTextField;
 	private JTextArea courseDescriptionTextArea;
 	private JCheckBox courseNutFreeCheckBox, courseVeganCheckBox, courseVegetarianCheckBox, courseGlutenFreeCheckBox;
-	private JPanel northPane, centrePane, southPane, courseEditPane;
+	private JPanel northPane, centrePane, southPane, courseEditPane, courseNamePane, coursePricePane,
+					courseCaloriesPane, courseDescriptionPane, courseTypePane;
 	private JList<Course> coursesList;
 	private Container cp;
 	private Menu menu;
@@ -59,8 +61,15 @@ public class AdministrationScreen extends JFrame {
 	 */
 	public AdministrationScreen(Menu menu, String inputtedPassword) throws InvalidAdministrationPasswordException {
 		super("Administation screen");
+		
+		// Check if credentials are right before creating the instance of AdministrationScreen.
+		// It may throw an unchecked exception.
 		this.checkCredentials(inputtedPassword);
+		
+		// Get the menu instance with information about all the courses
 		this.menu = menu;
+		
+		// Get the content pane as a class property
 		this.cp = this.getContentPane();
 		this.cp.setLayout(new BorderLayout());
 		
@@ -68,10 +77,12 @@ public class AdministrationScreen extends JFrame {
 		this.northPane = new JPanel();
 		this.northPane.setLayout(new BoxLayout(this.northPane, BoxLayout.X_AXIS));
 		
+		// Screen heading
 		this.screenHeading = new JLabel("Administration screen");
 		screenHeading.setAlignmentY(Component.TOP_ALIGNMENT);
 		this.screenHeading.setFont(this.screenHeading.getFont().deriveFont(30));
 		
+		// Add components to the north pane
 		this.northPane.add(this.screenHeading);
 		
 		
@@ -157,6 +168,7 @@ public class AdministrationScreen extends JFrame {
 			
 		});
 		
+		// Add a new course button
 		this.addNewCourseButton = new JButton("Add a new course");
 		this.addNewCourseButton.addActionListener(new ActionListener() {
 
@@ -169,6 +181,7 @@ public class AdministrationScreen extends JFrame {
 			
 		});
 		
+		// Delete courses button
 		this.deleteSelectedCoursesButton = new JButton("Delete selected courses");
 		this.deleteSelectedCoursesButton.setEnabled(false);
 		this.deleteSelectedCoursesButton.addActionListener(new ActionListener() {
@@ -186,17 +199,45 @@ public class AdministrationScreen extends JFrame {
 			
 		});
 		
+		// Course edit pane (containing all the text fields and checkboxes)
 		this.courseEditPane = new JPanel();
 		this.courseEditPane.setLayout(new BoxLayout(this.courseEditPane, BoxLayout.Y_AXIS));
+		
+		// Course name
+		this.courseNamePane = new JPanel();
+		this.courseNamePane.setLayout(new FlowLayout(FlowLayout.LEFT));
 		
 		this.courseNameTextField = new JTextField();
 		this.courseNameTextField.setEnabled(false);
 		
+		this.courseNamePane.add(new JLabel("Name"));
+		this.courseNamePane.add(this.courseNameTextField);
+		
+		// Course type
+		this.courseTypePane = new JPanel();
+		this.courseTypePane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		this.courseTypeComboBox = new JComboBox<String>(Course.COURSE_TYPES);
 		this.courseTypeComboBox.setEnabled(false);
 		
+		this.courseTypePane.add(new JLabel("Type"));
+		this.courseTypePane.add(this.courseTypeComboBox);
+		
+		
+		// Calories
+		this.courseCaloriesPane = new JPanel();
+		this.courseCaloriesPane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		this.courseCaloriesTextField = new JTextField();
 		this.courseCaloriesTextField.setEnabled(false);
+		
+		this.courseCaloriesPane.add(new JLabel("Calories"));
+		this.courseCaloriesPane.add(this.courseCaloriesTextField);
+		this.courseCaloriesPane.add(new JLabel("cal (!! NOT KCAL !!)"));
+		
+		// Course description
+		this.courseDescriptionPane = new JPanel();
+		this.courseDescriptionPane.setLayout(new BoxLayout(this.courseDescriptionPane, BoxLayout.Y_AXIS));
 		
 		this.courseDescriptionTextArea = new JTextArea();
 		this.courseDescriptionTextArea.setColumns(5);
@@ -204,21 +245,36 @@ public class AdministrationScreen extends JFrame {
 		this.courseDescriptionTextArea.setRows(5);
 		this.courseDescriptionTextArea.setEnabled(false);
 		
+		this.courseDescriptionPane.add(new JLabel("Description"));
+		this.courseDescriptionPane.add(this.courseDescriptionTextArea);
+		
+		// Price
+		this.coursePricePane = new JPanel();
+		this.coursePricePane.setLayout(new FlowLayout(FlowLayout.LEFT));
+		
 		this.coursePriceTextField = new JTextField();
 		this.coursePriceTextField.setEnabled(false);
 		
+		this.coursePricePane.add(new JLabel("Price £"));
+		this.coursePricePane.add(this.coursePriceTextField);
+		
+		// Gluten-free checkbox
 		this.courseGlutenFreeCheckBox = new JCheckBox("Gluten free");
 		this.courseGlutenFreeCheckBox.setEnabled(false);
 		
+		// Nut-free checkbox
 		this.courseNutFreeCheckBox = new JCheckBox("Nut free");
 		this.courseNutFreeCheckBox.setEnabled(false);
 		
+		// Vegan checkbox
 		this.courseVeganCheckBox = new JCheckBox("Vegan");
 		this.courseVeganCheckBox.setEnabled(false);
 		
+		// Vegetarian checkbox
 		this.courseVegetarianCheckBox = new JCheckBox("Vegetarian");
 		this.courseVegetarianCheckBox.setEnabled(false);
 		
+		// Save course button
 		this.saveCourseButton = new JButton("Save changes");
 		this.saveCourseButton.setEnabled(false);
 		this.saveCourseButton.addActionListener(new ActionListener() {
@@ -289,18 +345,19 @@ public class AdministrationScreen extends JFrame {
 			
 		});
 		
-		this.courseEditPane.add(this.courseNameTextField);
-		this.courseEditPane.add(this.coursePriceTextField);
-		this.courseEditPane.add(this.courseTypeComboBox);
-		this.courseEditPane.add(this.courseDescriptionTextArea);
-		this.courseEditPane.add(this.courseCaloriesTextField);
+		// Add things to the edit pane
+		this.courseEditPane.add(this.courseNamePane);
+		this.courseEditPane.add(this.coursePricePane);
+		this.courseEditPane.add(this.courseTypePane);
+		this.courseEditPane.add(this.courseCaloriesPane);
+		this.courseEditPane.add(this.courseDescriptionPane);
 		this.courseEditPane.add(this.courseGlutenFreeCheckBox);
 		this.courseEditPane.add(this.courseNutFreeCheckBox);
 		this.courseEditPane.add(this.courseVeganCheckBox);
 		this.courseEditPane.add(this.courseVegetarianCheckBox);
-		this.courseEditPane.add(this.courseCaloriesTextField);
 		this.courseEditPane.add(this.saveCourseButton);
 		
+		// Add components to the centre pane
 		this.centrePane.add(this.coursesList);
 		this.centrePane.add(this.deleteSelectedCoursesButton);
 		this.centrePane.add(this.addNewCourseButton);
@@ -310,6 +367,7 @@ public class AdministrationScreen extends JFrame {
 		// South pane
 		this.southPane = new JPanel();
 		
+		// Close button
 		this.closeButton = new JButton("Close");
 		this.closeButton.addActionListener(new ActionListener() {
 
@@ -328,6 +386,7 @@ public class AdministrationScreen extends JFrame {
 			
 		});
 		
+		// Add components to the south pane
 		this.southPane.add(this.closeButton);
 		
 		
