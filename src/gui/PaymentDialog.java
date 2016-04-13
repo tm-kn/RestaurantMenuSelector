@@ -181,6 +181,7 @@ public class PaymentDialog extends JDialog {
 	 */
 	private void addPaymentError(String error) {
 		this.errorMessageLabel.setText(error);
+		this.pack();
 	}
 	
 	/**
