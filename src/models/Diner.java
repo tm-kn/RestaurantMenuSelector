@@ -10,13 +10,13 @@ import java.util.List;
  */
 public class Diner {
 
-	private List<Course> courses = new ArrayList<Course>();
+	private List<Course> courses;
 
 	/**
 	 * Constructs a Diner object.
 	 */
 	public Diner() {
-
+		this.courses = new ArrayList<Course>();
 	}
 
 	/**
