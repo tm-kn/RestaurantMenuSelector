@@ -4,8 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -21,7 +19,6 @@ import javax.swing.JTextArea;
 public class ReceiptDialog extends JDialog {
 
 	private static final long serialVersionUID = 2044296553041850972L;
-	private PaymentDialog parent;
 	private String receiptContent;
 	private Container cp;
 	private JTextArea receiptTextArea;
@@ -39,7 +36,6 @@ public class ReceiptDialog extends JDialog {
 		this.cp = this.getContentPane();
 		this.cp.setLayout(new BorderLayout());
 		
-		this.parent = parent;
 		this.receiptContent = receiptContent;
 		
 		this.receiptTextArea = new JTextArea(this.receiptContent);
