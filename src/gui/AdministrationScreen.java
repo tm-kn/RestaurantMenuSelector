@@ -209,6 +209,7 @@ public class AdministrationScreen extends JFrame {
 		
 		this.courseNameTextField = new JTextField();
 		this.courseNameTextField.setEnabled(false);
+		this.courseNameTextField.setColumns(20);
 		
 		this.courseNamePane.add(new JLabel("Name"));
 		this.courseNamePane.add(this.courseNameTextField);
@@ -230,6 +231,7 @@ public class AdministrationScreen extends JFrame {
 		
 		this.courseCaloriesTextField = new JTextField();
 		this.courseCaloriesTextField.setEnabled(false);
+		this.courseCaloriesTextField.setColumns(20);
 		
 		this.courseCaloriesPane.add(new JLabel("Calories"));
 		this.courseCaloriesPane.add(this.courseCaloriesTextField);
@@ -254,6 +256,7 @@ public class AdministrationScreen extends JFrame {
 		
 		this.coursePriceTextField = new JTextField();
 		this.coursePriceTextField.setEnabled(false);
+		this.coursePriceTextField.setColumns(20);
 		
 		this.coursePricePane.add(new JLabel("Price £"));
 		this.coursePricePane.add(this.coursePriceTextField);
